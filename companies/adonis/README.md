@@ -14,7 +14,7 @@ Architecture-heavy notes include Mermaid diagrams that render directly on GitHub
 ## Preparation areas
 
 - [Behavioral preparation](behavioral/README.md)
-- [DSA and fast recognition](dsa/README.md)
+- [Pattern recognition and DSA](../../docs/pattern_recognition/README.md)
 - [Platform coding](platform_coding/README.md)
 - [System design](system_design/README.md)
 - [Healthcare domain knowledge](domain/README.md)

@@ -6,7 +6,7 @@ Use this page as the main entry point for the repository's study notes. The sour
 
 - [Study plan](STUDY_PLAN.md)
 - [Interview workflow](INTERVIEW_WORKFLOW.md)
-- [Pattern recognition](PATTERN_RECOGNITION.md)
+- [Pattern recognition hub](pattern_recognition/README.md)
 - [Complexity guide](COMPLEXITY_GUIDE.md)
 - [Common Python errors](PYTHON_ERRORS.md)
 - [Question template](QUESTION_TEMPLATE.py)
@@ -14,6 +14,7 @@ Use this page as the main entry point for the repository's study notes. The sour
 ## Topic collections
 
 - [Data structures and algorithms](dsa/README.md)
+- [Pattern recognition](pattern_recognition/README.md)
 - [Python](python/README.md)
 - [SQL](sql/README.md)
 - [System design](system_design/README.md)

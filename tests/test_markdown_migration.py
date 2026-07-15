@@ -24,13 +24,13 @@ def test_every_legacy_text_note_is_mapped() -> None:
     assert source_notes == set(MAPPINGS)
 
 
-def test_all_adonis_notes_and_fast_recognition_are_included() -> None:
+def test_all_migrated_notes_and_fast_recognition_are_included() -> None:
     adonis_notes = {name for name in MAPPINGS if name.startswith("Companies/Adonis/")}
     assert len(adonis_notes) == 19
     source_name = "Companies/Adonis/FastRecognitionSummary.txt"
     destination = ROOT / MAPPINGS[source_name]
     migrated = destination.read_text(encoding="utf-8")
-    assert destination == ROOT / "companies/adonis/dsa/FAST_RECOGNITION_SUMMARY.md"
+    assert destination == ROOT / "docs/pattern_recognition/FAST_RECOGNITION_SUMMARY.md"
     if SOURCE.is_dir():
         source_body = markdown_body(
             sanitize((SOURCE / source_name).read_text(encoding="utf-8"), source_name)
@@ -39,7 +39,7 @@ def test_all_adonis_notes_and_fast_recognition_are_included() -> None:
     else:
         assert len(migrated.splitlines()) > 1_000
     assert "[Fast recognition summary](FAST_RECOGNITION_SUMMARY.md)" in (
-        ROOT / "companies/adonis/dsa/README.md"
+        ROOT / "docs/pattern_recognition/README.md"
     ).read_text(encoding="utf-8")
 
 
@@ -77,13 +77,13 @@ def test_company_and_documentation_indexes_exist() -> None:
     expected = [
         "docs/README.md",
         "docs/dsa/README.md",
+        "docs/pattern_recognition/README.md",
         "docs/python/README.md",
         "docs/sql/README.md",
         "docs/system_design/README.md",
         "companies/README.md",
         "companies/adonis/README.md",
         "companies/adonis/behavioral/README.md",
-        "companies/adonis/dsa/README.md",
         "companies/adonis/platform_coding/README.md",
         "companies/adonis/system_design/README.md",
     ]

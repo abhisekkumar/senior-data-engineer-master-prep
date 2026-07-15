@@ -36,8 +36,8 @@ unstructured collection of solutions.
 senior-data-engineering-interview-prep/
 ├── leetcode_python/      # Numbered LeetCode and custom Python exercises by pattern
 ├── sql/                  # SQL practice, kept separate from Python questions
-├── docs/                 # General interview notes, diagrams, plans, and guides
-├── companies/adonis/     # Adonis-specific preparation, including all migrated text notes
+├── docs/                 # General guides, including the pattern-recognition hub
+├── companies/adonis/     # Company-focused preparation material
 ├── study/                # Current month, daily plan, reviews, mocks, and mistake log
 ├── tracker/              # Question metadata, attempts, plans, scheduling, and analytics
 ├── dashboard/            # Local Streamlit application
@@ -50,9 +50,10 @@ senior-data-engineering-interview-prep/
 The original private migration source is not part of this repository. Public material is
 generalized and checked for private employer references, identifiers, and confidential details.
 
-The Adonis library includes all 19 original text notes. Start at
-[`companies/adonis/README.md`](companies/adonis/README.md); the detailed recognition guide is
-[`companies/adonis/dsa/FAST_RECOGNITION_SUMMARY.md`](companies/adonis/dsa/FAST_RECOGNITION_SUMMARY.md).
+For pattern recognition, start with the
+[`docs/pattern_recognition/` hub](docs/pattern_recognition/README.md). It includes the detailed
+fast-recognition summary, compact clue maps, interview pattern comparisons, and focused heap
+guides.
 
 ## Setup
 

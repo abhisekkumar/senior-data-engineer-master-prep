@@ -12,7 +12,7 @@ The legacy tree contained 156 files: 111 Python files, 35 text notes, 9 SQL file
 - Reorganized 68 distinct LeetCode questions using the author's original implementations. Educational headers and closing complexity notes were added around the source; implementations were not rewritten.
 - Consolidated the reusable debugging, platform-coding, and Python memory exercises into six employer-neutral Python/data-engineering modules.
 - Consolidated nine SQL scratch files into six corrected, categorized SQL pattern files.
-- Converted all 35 legacy text notes into sanitized, GitHub-formatted Markdown: 16 general notes under `docs/` and 19 Adonis preparation notes under `companies/adonis/`.
+- Converted all 35 legacy text notes into sanitized, GitHub-formatted Markdown. Reusable fast-recognition, pattern, and heap guides are centralized under `docs/pattern_recognition/`; company-focused material remains under `companies/adonis/`.
 - Redesigned 17 architecture-heavy notes with Mermaid diagrams, interview-framing summaries, and highlighted trade-offs.
 
 ## Duplicate and naming inventory

@@ -8,7 +8,7 @@ SOURCE = ROOT / "Senior Data Engineer Interview Prep"
 
 MAPPINGS = {
     "Data_Structure_Algorithms/MasterRoadmap.txt": "docs/dsa/MASTER_ROADMAP.md",
-    "Data_Structure_Algorithms/PatternRecognition.txt": "docs/dsa/PATTERN_RECOGNITION_NOTES.md",
+    "Data_Structure_Algorithms/PatternRecognition.txt": "docs/pattern_recognition/PATTERN_RECOGNITION_NOTES.md",
     "Data_Structure_Algorithms/scratch.txt": "docs/dsa/SCRATCH_NOTES.md",
     "Python/ImportantPoints.txt": "docs/python/PYTHON_IMPORTANT_POINTS.md",
     "SQL_Interview/ImportantPoints.txt": "docs/sql/SQL_IMPORTANT_POINTS.md",
@@ -25,8 +25,8 @@ MAPPINGS = {
     "System_Design/Stock_Trading_Data_Platform.txt": "docs/system_design/STOCK_TRADING_DATA_PLATFORM.md",
     "Companies/Adonis/Ask&Think.txt": "companies/adonis/interview_strategy/ASK_AND_THINK.md",
     "Companies/Adonis/ConsolidatePhaseChecklist.txt": "companies/adonis/checklists/CONSOLIDATED_PHASE_CHECKLIST.md",
-    "Companies/Adonis/FastRecognitionSummary.txt": "companies/adonis/dsa/FAST_RECOGNITION_SUMMARY.md",
-    "Companies/Adonis/PatternRecognition.txt": "companies/adonis/dsa/PATTERN_RECOGNITION.md",
+    "Companies/Adonis/FastRecognitionSummary.txt": "docs/pattern_recognition/FAST_RECOGNITION_SUMMARY.md",
+    "Companies/Adonis/PatternRecognition.txt": "docs/pattern_recognition/INTERVIEW_PATTERN_RECOGNITION.md",
     "Companies/Adonis/Program.txt": "companies/adonis/STUDY_PROGRAM.md",
     "Companies/Adonis/Cultural_Behavioral/Categorical.txt": "companies/adonis/behavioral/BEHAVIORAL_CATEGORIES.md",
     "Companies/Adonis/Cultural_Behavioral/HealtcareIntegration.txt": "companies/adonis/domain/HEALTHCARE_INTEGRATION.md",
@@ -39,9 +39,9 @@ MAPPINGS = {
     "Companies/Adonis/DSA/Phase 2/Platform/IncrementalCDC.txt": "companies/adonis/platform_coding/INCREMENTAL_CDC.md",
     "Companies/Adonis/DSA/Phase 2/Platform/MergeProviderFeed.txt": "companies/adonis/platform_coding/MERGE_REFERENCE_FEED.md",
     "Companies/Adonis/DSA/Phase 2/Platform/Watermarks.txt": "companies/adonis/platform_coding/WATERMARKS.md",
-    "Companies/Adonis/DSA/Phase 6/Basics/HeapFunctions.txt": "companies/adonis/dsa/heap/HEAP_FUNCTIONS.md",
-    "Companies/Adonis/DSA/Phase 6/Basics/HeapVsStackVsQueue.txt": "companies/adonis/dsa/heap/HEAP_VS_STACK_VS_QUEUE.md",
-    "Companies/Adonis/DSA/Phase 6/Basics/MaxHeap.txt": "companies/adonis/dsa/heap/MAX_HEAP.md",
+    "Companies/Adonis/DSA/Phase 6/Basics/HeapFunctions.txt": "docs/pattern_recognition/heap/HEAP_FUNCTIONS.md",
+    "Companies/Adonis/DSA/Phase 6/Basics/HeapVsStackVsQueue.txt": "docs/pattern_recognition/heap/HEAP_VS_STACK_VS_QUEUE.md",
+    "Companies/Adonis/DSA/Phase 6/Basics/MaxHeap.txt": "docs/pattern_recognition/heap/MAX_HEAP.md",
 }
 
 SENSITIVE_METRIC = re.compile(
