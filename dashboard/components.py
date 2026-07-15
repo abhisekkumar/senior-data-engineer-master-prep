@@ -20,11 +20,12 @@ def metric_grid(values: dict[str, Any]) -> None:
         columns = st.columns(4)
         for column, (label, key, suffix) in zip(columns, metrics[start : start + 4], strict=True):
             value = values[key]
-            column.metric(label, f"{value} {suffix}" if suffix else value)
+            column.metric(label, f"{value} {suffix}" if suffix else value, border=True)
 
 
 def question_table(questions: list[dict[str, Any]]) -> None:
     columns = [
+        "source",
         "leetcode_number",
         "title",
         "primary_pattern",
@@ -38,4 +39,39 @@ def question_table(questions: list[dict[str, Any]]) -> None:
         "file_path",
     ]
     rows = [{column: question.get(column) for column in columns} for question in questions]
-    st.dataframe(rows, width="stretch", hide_index=True)
+    st.dataframe(
+        rows,
+        width="stretch",
+        hide_index=True,
+        column_config={
+            "source": st.column_config.TextColumn("Source", pinned=True),
+            "leetcode_number": st.column_config.NumberColumn("LeetCode", format="%d"),
+            "title": st.column_config.TextColumn("Question", pinned=True),
+            "primary_pattern": st.column_config.TextColumn("Pattern"),
+            "category": st.column_config.TextColumn("Category"),
+            "difficulty": st.column_config.TextColumn("Difficulty"),
+            "status": st.column_config.TextColumn("Status"),
+            "confidence": st.column_config.ProgressColumn(
+                "Confidence", min_value=0, max_value=5, format="%d / 5"
+            ),
+            "attempts": st.column_config.NumberColumn("Attempts", format="%d"),
+            "next_review": st.column_config.DateColumn("Next review", format="MMM D, YYYY"),
+            "mistake_tags": st.column_config.ListColumn("Mistakes"),
+            "file_path": st.column_config.TextColumn("Local file"),
+        },
+    )
+
+
+def resource_table(resources: list[dict[str, str]]) -> None:
+    st.dataframe(
+        resources,
+        width="stretch",
+        hide_index=True,
+        column_config={
+            "title": st.column_config.TextColumn("Resource", pinned=True),
+            "collection": st.column_config.TextColumn("Collection"),
+            "topic": st.column_config.TextColumn("Topic"),
+            "format": st.column_config.TextColumn("Format"),
+            "file_path": st.column_config.TextColumn("Local file"),
+        },
+    )

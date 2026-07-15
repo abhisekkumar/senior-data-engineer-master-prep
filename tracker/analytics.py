@@ -28,6 +28,7 @@ def summary(questions: list[dict[str, Any]], attempts: list[dict[str, Any]]) -> 
         else 0,
         "patterns": dict(Counter(q.get("primary_pattern", "unknown") for q in questions)),
         "difficulties": dict(Counter(q.get("difficulty", "unknown") for q in questions)),
+        "sources": dict(Counter(q.get("source", "unknown") for q in questions)),
         "streak": streak,
         "attempts": len(attempts),
         "average_minutes": round(

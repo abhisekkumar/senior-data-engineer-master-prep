@@ -2,13 +2,13 @@
 
 ## Audit
 
-The legacy tree contains 156 files: 111 Python files, 35 text notes, 9 SQL files, and one `.DS_Store`. All were inspected by path; coding sources were grouped by phase/pattern. The tree contains duplicate implementations, inconsistent casing/names, partial exercises, informal notes, and no original tracker data. No useful source was deleted.
+The legacy tree contained 156 files: 111 Python files, 35 text notes, 9 SQL files, and one `.DS_Store`. All were inspected by path; coding sources were grouped by phase/pattern. The tree contained duplicate implementations, inconsistent casing/names, partial exercises, informal notes, and no original tracker data. The private source tree was removed after the reviewed, generalized migration was validated.
 
 ## Completed foundation migration
 
-- Established the public identity `senior-data-engineer-master-prep`.
+- Established the public identity `senior-data-engineering-interview-prep`.
 - Added configuration, public documentation, safe JSON persistence, models, scheduling, analytics, CLI commands, tests, dashboard, and optional no-op AI support.
-- Preserved the entire `Senior Data Engineer Interview Prep/` tree locally as a Git-ignored private migration source. It must never be published wholesale.
+- Removed the private `Senior Data Engineer Interview Prep/` migration source after public files were generalized, validated, and indexed. Its path remains Git-ignored as a safety guard.
 - Reorganized 68 distinct LeetCode questions using the author's original implementations. Educational headers and closing complexity notes were added around the source; implementations were not rewritten.
 - Consolidated the reusable debugging, platform-coding, and Python memory exercises into six employer-neutral Python/data-engineering modules.
 - Consolidated nine SQL scratch files into six corrected, categorized SQL pattern files.
@@ -25,4 +25,4 @@ Legacy company-specific notes were sanitized and generalized during public migra
 
 The preservation pass deliberately retains draft issues in the original implementations. Known examples include invalid syntax in the original Valid Anagram implementation and a stray executable fragment in the original 3Sum notes. These are labeled for author review rather than silently corrected. Ruff excludes numbered preserved-source files; structural tests validate their required interview sections.
 
-No pre-existing confidence, attempt, or date records were found, so none were fabricated. The legacy folder is excluded from Ruff and Git during this incremental migration and remains local-only.
+No pre-existing confidence, attempt, or date records were found, so none were fabricated. The legacy folder is excluded from Ruff and Git as a safety guard and is no longer present locally.

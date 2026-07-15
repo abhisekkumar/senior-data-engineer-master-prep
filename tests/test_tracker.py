@@ -6,7 +6,7 @@ from tracker.models import Question
 
 def test_catalog_models_are_valid() -> None:
     questions = [Question.from_dict(item) for item in load_questions()]
-    assert len(questions) == 74
+    assert len(questions) == 80
     assert len({item.id for item in questions}) == len(questions)
 
 

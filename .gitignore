@@ -11,7 +11,7 @@ tracker/*.db
 exports/*
 !exports/.gitkeep
 
-# Private source notes: kept locally for review and never published wholesale.
+# Historical private-source path: always ignore it if it is recreated locally.
 Senior Data Engineer Interview Prep/
 
 # Environment-specific tool skills and symlinks.

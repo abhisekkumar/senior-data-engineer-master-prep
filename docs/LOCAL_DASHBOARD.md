@@ -34,6 +34,12 @@ http://localhost:8501
 
 Stop it with `Ctrl+C` in the terminal.
 
+## Light and dark modes
+
+Open the Streamlit menu in the upper-right corner, then choose **Settings → Theme**. Both modes
+use the repository's configured indigo palette, readable contrast, matching charts, and a
+mode-specific sidebar.
+
 ## Dashboard sections
 
 ### Dashboard
@@ -46,6 +52,7 @@ Stop it with `Ctrl+C` in the terminal.
 - Total attempts
 - Average practice time
 - Questions by pattern and difficulty
+- Exercises by source and today's five-item completion progress
 
 ### Today's Five
 
@@ -61,6 +68,7 @@ Stop it with `Ctrl+C` in the terminal.
 Filter by:
 
 - LeetCode number, title, or tracker ID
+- Source: LeetCode, custom Python/data engineering, or SQL
 - Pattern
 - Category
 - Difficulty
@@ -84,6 +92,33 @@ Filter by:
 - Questions completed by category
 - Average practice time by category
 - Mistakes by type
+
+### Study library
+
+- Public interview guides and system-design notes under `docs/`
+- SQL exercises under `sql/`
+- Company preparation under `companies/`
+- Operational study plans under `study/`
+
+## Automatic solution discovery
+
+The dashboard synchronizes the public solution catalog every time it opens. It registers:
+
+- `leetcode_python/**/*.py`, excluding package `__init__.py` files
+- `sql/**/*.sql`
+
+Numbered filenames such as `0875_koko_eating_bananas.py` become LeetCode records. Non-numbered
+Python files become custom exercises, so data-engineering coding problems do not receive invented
+LeetCode numbers. SQL records use their folder and filename for a stable tracker ID.
+
+Run synchronization without opening Streamlit with:
+
+```bash
+make sync
+```
+
+Existing records are matched by file path and are never overwritten. Optional `Title:`,
+`Difficulty:`, and `Primary Pattern:` headers improve inferred metadata.
 
 ## Data files
 

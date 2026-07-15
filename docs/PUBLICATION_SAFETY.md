@@ -1,6 +1,8 @@
 # Publication safety
 
-The legacy study-note directory is intentionally Git-ignored and must remain local. It contains material that requires human privacy and confidentiality review before any idea can be generalized for publication.
+The original legacy study-note directory was removed after migration. Its historical path remains
+Git-ignored so it cannot be accidentally recreated and published. Any future private source
+material requires human privacy and confidentiality review before an idea can be generalized.
 
 Before staging or pushing content:
 

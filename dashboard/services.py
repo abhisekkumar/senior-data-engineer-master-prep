@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from tracker.analytics import summary
+from tracker.catalog import sync_catalog
 from tracker.database import ROOT, atomic_write_json, load_questions, read_json
 from tracker.scheduler import (
     REVIEW_INTERVALS,
@@ -17,6 +18,12 @@ from tracker.scheduler import (
 QUESTIONS_PATH = ROOT / "tracker/questions.json"
 PRACTICE_LOG_PATH = ROOT / "tracker/practice_log.json"
 STUDY_PLAN_PATH = ROOT / "tracker/study_plan.json"
+RESOURCE_ROOTS = {
+    "Interview guides": ROOT / "docs",
+    "SQL practice": ROOT / "sql",
+    "Company prep": ROOT / "companies",
+    "Study plans": ROOT / "study",
+}
 
 
 def _plans() -> list[dict[str, Any]]:
@@ -42,6 +49,7 @@ def get_or_create_daily_plan(
 
 
 def dashboard_data(*, persist_plan: bool = False) -> dict[str, Any]:
+    catalog_sync = sync_catalog()
     questions = load_questions()
     attempts = read_json(PRACTICE_LOG_PATH, [])
     if not isinstance(attempts, list):
@@ -51,7 +59,43 @@ def dashboard_data(*, persist_plan: bool = False) -> dict[str, Any]:
         "attempts": attempts,
         "summary": summary(questions, attempts),
         "today": get_or_create_daily_plan(questions, persist=persist_plan),
+        "catalog_sync": catalog_sync,
+        "resources": study_resources(),
     }
+
+
+def study_resources() -> list[dict[str, str]]:
+    resources: list[dict[str, str]] = []
+    for collection, root in RESOURCE_ROOTS.items():
+        if not root.is_dir():
+            continue
+        for path in sorted(root.rglob("*")):
+            if not path.is_file() or path.suffix.casefold() not in {".md", ".sql"}:
+                continue
+            relative = path.relative_to(ROOT).as_posix()
+            local = path.relative_to(root)
+            section = local.parts[0] if len(local.parts) > 1 else "overview"
+            title = path.stem.replace("_", " ").replace("-", " ").strip().title()
+            if path.suffix.casefold() == ".md":
+                first_heading = next(
+                    (
+                        line.removeprefix("# ").strip()
+                        for line in path.read_text(encoding="utf-8").splitlines()
+                        if line.startswith("# ")
+                    ),
+                    None,
+                )
+                title = first_heading or title
+            resources.append(
+                {
+                    "title": title,
+                    "collection": collection,
+                    "topic": section.replace("_", " ").title(),
+                    "format": "SQL" if path.suffix.casefold() == ".sql" else "Guide",
+                    "file_path": relative,
+                }
+            )
+    return resources
 
 
 def question_by_id(questions: list[dict[str, Any]], question_id: str) -> dict[str, Any] | None:
@@ -66,6 +110,7 @@ def filter_questions(
     questions: list[dict[str, Any]],
     *,
     query: str = "",
+    source: str = "All",
     pattern: str = "All",
     category: str = "All",
     difficulty: str = "All",
@@ -104,6 +149,7 @@ def filter_questions(
             or query == str(question.get("leetcode_number", ""))
         )
         and (pattern == "All" or question["primary_pattern"] == pattern)
+        and (source == "All" or question.get("source") == source)
         and (category == "All" or question["category"] == category)
         and (difficulty == "All" or question["difficulty"] == difficulty)
         and (status == "All" or question["status"] == status)

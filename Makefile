@@ -1,4 +1,4 @@
-.PHONY: install test lint format validate dashboard daily weekly export docs
+.PHONY: install test lint format validate sync dashboard daily weekly export docs
 install:
 	pip install -r requirements.txt
 test:
@@ -9,6 +9,8 @@ format:
 	ruff format .
 validate:
 	python3 scripts/validate_questions.py
+sync:
+	python3 scripts/sync_catalog.py
 dashboard:
 	streamlit run dashboard/app.py
 daily:

@@ -43,6 +43,8 @@ Then:
 - Update or review the record in `tracker/questions.json`.
 - Do not rewrite `tracker/practice_log.json` history; attempts are append-only.
 - Use the safe tracker utilities for JSON changes where practical.
+- Run `make sync` after adding a Python or SQL solution. The synchronizer adds missing records and
+  preserves all existing practice state.
 
 ## Pull-request description
 

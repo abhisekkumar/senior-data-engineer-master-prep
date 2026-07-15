@@ -1,4 +1,4 @@
-# Senior Data Engineer Master Prep
+# Senior Data Engineering Interview Prep
 
 A lightweight, open-source study system for senior data engineering interviews. It keeps Python
 and DSA practice, SQL, system design, company preparation, spaced repetition, and progress
@@ -20,11 +20,12 @@ unstructured collection of solutions.
 ## Key features
 
 - 68 numbered LeetCode question files organized by interview pattern
-- Six employer-neutral Python and data engineering exercises
+- Six employer-neutral Python/data-engineering exercises and six tracked SQL exercises
 - An interview template around every migrated solution, with the original code preserved
 - Confidence-based spaced repetition and an append-only practice log
 - A five-item daily plan covering coding, fundamentals, engineering, and communication
-- A local Streamlit dashboard with tracking forms, filters, review queues, and progress charts
+- Automatic catalog synchronization for new Python, data-engineering, and SQL solutions
+- A polished local Streamlit dashboard with study resources, filters, review queues, and charts
 - Separate documentation, SQL, and company-preparation libraries
 - Pytest, Ruff, metadata validation, safe JSON writes, and helpful command-line tools
 - Optional AI feedback that is disabled by default and never required
@@ -32,7 +33,7 @@ unstructured collection of solutions.
 ## Repository structure
 
 ```text
-senior-data-engineer-master-prep/
+senior-data-engineering-interview-prep/
 ├── leetcode_python/      # Numbered LeetCode and custom Python exercises by pattern
 ├── sql/                  # SQL practice, kept separate from Python questions
 ├── docs/                 # General interview notes, diagrams, plans, and guides
@@ -46,8 +47,8 @@ senior-data-engineer-master-prep/
 └── exports/              # Generated progress exports
 ```
 
-The private source folder is retained locally only as migration evidence and is excluded by
-`.gitignore`. Public material is generalized and checked for private employer references.
+The original private migration source is not part of this repository. Public material is
+generalized and checked for private employer references, identifiers, and confidential details.
 
 The Adonis library includes all 19 original text notes. Start at
 [`companies/adonis/README.md`](companies/adonis/README.md); the detailed recognition guide is
@@ -69,6 +70,7 @@ Common commands:
 make test       # Run the complete pytest suite
 make lint       # Run Ruff checks
 make validate   # Validate tracker records and question documentation
+make sync       # Register newly added Python and SQL solution files
 make daily      # Generate today's five-item study plan
 make weekly     # Generate a weekly review
 make export     # Export progress summaries
@@ -97,18 +99,57 @@ streamlit run dashboard/app.py
 ```
 
 Then open [http://localhost:8501](http://localhost:8501). No authentication or AI key is needed.
+Use the Streamlit menu in the upper-right corner and select **Settings → Theme** to switch between
+the repository's coordinated light and dark modes.
 The dashboard provides:
 
-- Summary metrics and question breakdowns
+- Summary metrics, source/pattern breakdowns, and today's completion progress
 - Today's five tasks, local file links, status updates, and practice forms
-- Question search by number/title and filters for pattern, category, difficulty, status,
+- Python, custom data-engineering, and SQL catalog synchronization whenever the app opens
+- Question search by number/title and filters for source, pattern, category, difficulty, status,
   confidence, due date, and mistake tag
 - Overdue, due-today, due-this-week, low-confidence, and frequently missed review queues
+- A study library for public SQL, system-design, company-prep, and study-plan material
 - Attempt, confidence, completion, timing, and mistake charts
 
 The tracker writes locally to `tracker/questions.json`, `tracker/practice_log.json`, and
 `tracker/study_plan.json`. See [`docs/LOCAL_DASHBOARD.md`](docs/LOCAL_DASHBOARD.md) for the full
 workflow.
+
+## Add solutions and make them appear in the dashboard
+
+Yes—the dashboard can keep growing with your work. It discovers files from these public folders:
+
+| What you add | Put it here | Dashboard behavior |
+|---|---|---|
+| Numbered LeetCode Python | `leetcode_python/<pattern>/NNNN_title.py` | Tracked as LeetCode; the number is read only from the four-digit filename |
+| Custom/data-engineering Python | `leetcode_python/data_engineering_coding/<title>.py` or another Python pattern folder | Tracked as a custom coding exercise without inventing a LeetCode number |
+| SQL solution | `sql/<topic>/<title>.sql` | Tracked as a SQL exercise and included in practice/review/progress views |
+| Data-engineering or system-design guide | `docs/**/*.md` | Listed in the dashboard Study library |
+| Study/company-prep guide | `study/**/*.md` or `companies/**/*.md` | Listed in the dashboard Study library |
+
+Opening the dashboard runs synchronization automatically. You can also run it explicitly:
+
+```bash
+make sync
+```
+
+Synchronization only adds files that are not registered. It does not rewrite solution code or
+overwrite confidence, attempts, notes, review dates, or other existing tracker state.
+
+For richer inferred metadata, new Python or SQL files may include `Title:`, `Difficulty:`, and
+`Primary Pattern:` fields near the top. SQL uses comments, for example:
+
+```sql
+-- Title: Session gaps and islands
+-- Difficulty: Medium
+-- Primary Pattern: Window functions
+```
+
+For numbered Python work, start from [`docs/QUESTION_TEMPLATE.py`](docs/QUESTION_TEMPLATE.py) so
+the code has clarifying questions, brute-force and optimal approaches, a dry run, edge cases, and
+time/space complexity. Never invent a LeetCode number; use a non-numbered custom filename and a
+TODO when the mapping is uncertain.
 
 ## Five-item daily workflow
 
@@ -183,7 +224,7 @@ The author's migrated implementation remains exactly between:
 Documentation may be improved around that block, but automation must not reformat, optimize, or
 silently correct it. Use [`docs/QUESTION_TEMPLATE.py`](docs/QUESTION_TEMPLATE.py) for new work.
 
-## Add a question
+## Add a numbered LeetCode question
 
 ```bash
 python3 scripts/add_question.py \
@@ -197,7 +238,7 @@ Then:
 
 1. Complete the generated interview documentation and solution.
 2. Add standard, boundary, duplicate-heavy, negative, and empty-input tests when applicable.
-3. Review the new record in `tracker/questions.json`.
+3. Run `make sync` and review the record in `tracker/questions.json`.
 4. Run tests, Ruff, and validation.
 
 Never guess a LeetCode number. Use an `unknown_` filename and a TODO when the mapping is uncertain.
