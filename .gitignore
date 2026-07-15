@@ -1,0 +1,19 @@
+.DS_Store
+.env
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.streamlit/secrets.toml
+backups/
+tracker/*.db
+exports/*
+!exports/.gitkeep
+
+# Private source notes: kept locally for review and never published wholesale.
+Senior Data Engineer Interview Prep/
+
+# Environment-specific tool skills and symlinks.
+.agents/
+.claude/

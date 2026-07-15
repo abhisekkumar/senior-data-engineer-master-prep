@@ -1,0 +1,2 @@
+# Numbered files preserve the author's original whitespace inside marked solution blocks.
+leetcode_python/*/[0-9][0-9][0-9][0-9]_*.py -whitespace
