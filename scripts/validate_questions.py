@@ -8,6 +8,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from tracker.database import ROOT, load_questions
 from tracker.models import Question
+from tracker.roadmap import load_roadmap, roadmap_path
 
 REQUIRED_SECTIONS = (
     "LeetCode:",
@@ -61,6 +62,12 @@ def validate() -> list[str]:
                 errors.append(f"{question.file_path}: missing sections: {', '.join(missing)}")
             if content.count(ORIGINAL_START) != 1 or content.count(ORIGINAL_END) != 1:
                 errors.append(f"{question.file_path}: expected one preserved-solution marker pair")
+    try:
+        local_roadmap = roadmap_path()
+        if local_roadmap.exists():
+            load_roadmap(local_roadmap, seed_if_missing=False)
+    except (OSError, ValueError) as exc:
+        errors.append(f"roadmap: {exc}")
     return errors
 
 
@@ -68,7 +75,11 @@ def main() -> None:
     errors = validate()
     if errors:
         raise SystemExit("Validation failed:\n- " + "\n- ".join(errors))
-    print(f"Validated {len(load_questions())} question records and preserved solution boundaries.")
+    roadmap_message = " and the local roadmap" if roadmap_path().exists() else ""
+    print(
+        f"Validated {len(load_questions())} question records, preserved solution boundaries"
+        f"{roadmap_message}."
+    )
 
 
 if __name__ == "__main__":

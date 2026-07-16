@@ -12,6 +12,8 @@ def test_dashboard_data_loads_without_streamlit_runtime() -> None:
     assert data["summary"]["total_questions"] == 80
     assert len(data["today"]["items"]) == 5
     assert data["summary"]["sources"]["sql"] == 6
+    assert data["roadmap"].programs[0].name == "Senior Data Engineering Master Prep"
+    assert "overall_completion" in data["roadmap_summary"]
 
 
 def test_filter_questions() -> None:

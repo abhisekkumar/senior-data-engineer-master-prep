@@ -8,6 +8,17 @@ from typing import Any
 from tracker.analytics import summary
 from tracker.catalog import sync_catalog
 from tracker.database import ROOT, atomic_write_json, load_questions, read_json
+from tracker.roadmap import (
+    load_roadmap,
+    maybe_advance_phase,
+    program_progress,
+    save_roadmap,
+    unassigned_questions,
+    unresolved_question_links,
+    update_item,
+    update_item_status,
+)
+from tracker.roadmap_models import RoadmapDocument
 from tracker.scheduler import (
     REVIEW_INTERVALS,
     build_daily_plan,
@@ -34,14 +45,18 @@ def _plans() -> list[dict[str, Any]]:
 
 
 def get_or_create_daily_plan(
-    questions: list[dict[str, Any]], target: date | None = None, *, persist: bool = False
+    questions: list[dict[str, Any]],
+    target: date | None = None,
+    *,
+    persist: bool = False,
+    roadmap: RoadmapDocument | None = None,
 ) -> dict[str, Any]:
     target = target or date.today()
     plans = _plans()
     existing = next((plan for plan in plans if plan.get("date") == target.isoformat()), None)
     if existing is not None:
         return existing
-    plan = build_daily_plan(questions, target)
+    plan = build_daily_plan(questions, target, roadmap=roadmap)
     if persist:
         plans.append(plan)
         atomic_write_json(STUDY_PLAN_PATH, plans)
@@ -51,6 +66,7 @@ def get_or_create_daily_plan(
 def dashboard_data(*, persist_plan: bool = False) -> dict[str, Any]:
     catalog_sync = sync_catalog()
     questions = load_questions()
+    roadmap = load_roadmap(seed_question_ids=(question["id"] for question in questions))
     attempts = read_json(PRACTICE_LOG_PATH, [])
     if not isinstance(attempts, list):
         raise ValueError("tracker/practice_log.json must contain a list")
@@ -58,9 +74,15 @@ def dashboard_data(*, persist_plan: bool = False) -> dict[str, Any]:
         "questions": questions,
         "attempts": attempts,
         "summary": summary(questions, attempts),
-        "today": get_or_create_daily_plan(questions, persist=persist_plan),
+        "today": get_or_create_daily_plan(
+            questions, persist=persist_plan, roadmap=roadmap
+        ),
         "catalog_sync": catalog_sync,
         "resources": study_resources(),
+        "roadmap": roadmap,
+        "roadmap_summary": program_progress(roadmap, questions),
+        "unassigned_questions": unassigned_questions(roadmap, questions),
+        "unresolved_roadmap_links": unresolved_question_links(roadmap, questions),
     }
 
 
@@ -195,6 +217,7 @@ def update_daily_task(
     status: str,
     minutes_spent: int = 0,
     notes: str = "",
+    roadmap_status: str | None = None,
 ) -> None:
     if status not in {"not_started", "started", "completed"}:
         raise ValueError("invalid task status")
@@ -207,6 +230,28 @@ def update_daily_task(
         raise ValueError(f"position {position} was not found in the daily plan")
     task.update(status=status, minutes_spent=minutes_spent, notes=notes)
     atomic_write_json(STUDY_PLAN_PATH, plans)
+    roadmap_item_id = task.get("roadmap_item_id")
+    if roadmap_item_id and roadmap_status:
+        roadmap = load_roadmap()
+        item = update_item_status(roadmap, roadmap_item_id, roadmap_status)
+        linked_questions = [
+            question
+            for question in load_questions()
+            if question["id"] in item.linked_question_ids
+        ]
+        if linked_questions:
+            latest = max(
+                linked_questions,
+                key=lambda question: question.get("last_practiced") or "",
+            )
+            update_item(
+                roadmap,
+                roadmap_item_id,
+                last_practiced=latest.get("last_practiced"),
+                next_review=latest.get("next_review"),
+            )
+        maybe_advance_phase(roadmap)
+        save_roadmap(roadmap)
 
 
 def log_practice_attempt(

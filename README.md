@@ -24,6 +24,8 @@ unstructured collection of solutions.
 - An interview template around every migrated solution, with the original code preserved
 - Confidence-based spaced repetition and an append-only practice log
 - A five-item daily plan covering coding, fundamentals, engineering, and communication
+- An editable Phase A–V preparation roadmap with weighted readiness, question/resource links,
+  real-world exercises, local snapshots, and JSON/Markdown portability
 - Automatic catalog synchronization for new Python, data-engineering, and SQL solutions
 - A polished local Streamlit dashboard with study resources, filters, review queues, and charts
 - Separate documentation, SQL, and company-preparation libraries
@@ -41,6 +43,7 @@ senior-data-engineering-interview-prep/
 ├── study/                # Current month, daily plan, reviews, mocks, and mistake log
 ├── tracker/              # Question metadata, attempts, plans, scheduling, and analytics
 ├── dashboard/            # Local Streamlit application
+├── .local/               # Gitignored roadmap state and version history (created at runtime)
 ├── scripts/              # Migration, planning, logging, validation, and export commands
 ├── ai/                   # Optional no-op and OpenAI feedback providers
 ├── tests/                # Tracker, dashboard, scripts, migration, and catalog tests
@@ -106,6 +109,9 @@ The dashboard provides:
 
 - Summary metrics, source/pattern breakdowns, and today's completion progress
 - Today's five tasks, local file links, status updates, and practice forms
+- An editable Preparation Roadmap with phase/module/item progress and quick readiness updates
+- Unassigned-question linking without copying or changing catalog records
+- Roadmap settings, JSON/Markdown export, validated import, and local snapshot restoration
 - Python, custom data-engineering, and SQL catalog synchronization whenever the app opens
 - Question search by number/title and filters for source, pattern, category, difficulty, status,
   confidence, due date, and mistake tag
@@ -113,9 +119,42 @@ The dashboard provides:
 - A study library for public SQL, system-design, company-prep, and study-plan material
 - Attempt, confidence, completion, timing, and mistake charts
 
-The tracker writes locally to `tracker/questions.json`, `tracker/practice_log.json`, and
-`tracker/study_plan.json`. See [`docs/LOCAL_DASHBOARD.md`](docs/LOCAL_DASHBOARD.md) for the full
-workflow.
+The existing tracker writes to `tracker/questions.json`, `tracker/practice_log.json`, and
+`tracker/study_plan.json`. Personal roadmap state defaults to the gitignored
+`.local/roadmap.json`, with snapshots under `.local/history/roadmap/`. See
+[`docs/LOCAL_DASHBOARD.md`](docs/LOCAL_DASHBOARD.md) for the full workflow.
+
+## Preparation roadmap
+
+Open **Roadmap** to answer four practical questions quickly: which phase is active, how much is
+ready, what is weak or overdue, and what should be studied next. The editable hierarchy is:
+
+```text
+Program → Phase → Module → Roadmap item
+```
+
+Roadmap items can represent coding questions, SQL, Spark, Python fundamentals, architecture,
+system design, behavioral/GenAI preparation, mocks, documentation, or real-world production
+problems. Use the item status control to move from **Not started** through **Learning**,
+**Practicing**, **Interview ready**, and **Mastered**, or mark an item **Skipped**. Required items
+drive weighted phase completion; optional items do not block readiness.
+
+Catalog and roadmap state intentionally remain separate. A Python or SQL question can be complete
+and have confidence 4/5 while its roadmap item remains Practicing until you can solve, explain,
+and defend it independently. Linking or unlinking a question never changes its attempts, review
+dates, confidence, or solution file.
+
+Use **Roadmap → Edit curriculum** to add or edit phases, modules, and items. Use **Unassigned
+questions** to attach an automatically discovered catalog entry to a module. Use **Settings** to
+choose the active phase/module, configure automatic advancement, export or import the plan, create
+a snapshot, or restore an earlier local version. Automatic advancement is allowed only after all
+non-skipped required items in the current phase are at least Interview ready; manual switching
+requires an explicit override when that gate is not met.
+
+Real-world exercises can link a Markdown file and store draft scenario fields directly in the
+roadmap. Start new written exercises from
+[`docs/REAL_WORLD_PROBLEM_TEMPLATE.md`](docs/REAL_WORLD_PROBLEM_TEMPLATE.md). Keep all examples
+synthetic and employer-neutral.
 
 ## Add solutions and make them appear in the dashboard
 
@@ -156,11 +195,15 @@ TODO when the mapping is uncertain.
 
 Run `make daily` or open the **Today's Five** dashboard tab. A standard day contains:
 
-1. One completed Python/DSA question due for review
-2. One new or weak Python/DSA question
-3. One SQL, Python fundamentals, or debugging topic
-4. One Spark, data engineering, or system-design topic
-5. One behavioral, project explanation, GenAI, or troubleshooting topic
+1. One overdue roadmap-linked review
+2. One current-phase coding review
+3. One current-phase new, learning, or practicing item
+4. One SQL, Python fundamentals, Spark, data-engineering, or system-design item
+5. One real-world, behavioral, GenAI, or mock-interview item
+
+If a roadmap slot has no suitable item, the existing due/weak/rotating scheduler fills it. Existing
+daily plans are preserved. When completing a roadmap-linked daily item, choose the new roadmap
+status explicitly; checking a task never marks it Mastered automatically.
 
 Log coding practice in the dashboard or from the command line:
 
@@ -280,11 +323,10 @@ Before contributing, read [`CONTRIBUTING.md`](CONTRIBUTING.md) and
 confidential interview questions, employer-internal material, real company datasets, credentials,
 personal information, or protected health information. Use original wording and synthetic data.
 
-## Roadmap
+## Future improvements
 
-Planned improvements are tracked in [`docs/ROADMAP.md`](docs/ROADMAP.md), including deeper
-question tests, more SQL/Spark practice, mock-interview workflows, and optional provider-neutral
-AI feedback improvements.
+The preparation-roadmap data model, workflow, storage, and remaining ideas are documented in
+[`docs/ROADMAP.md`](docs/ROADMAP.md).
 
 ## License
 

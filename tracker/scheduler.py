@@ -1,7 +1,10 @@
 from __future__ import annotations
 
 from datetime import date, timedelta
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from tracker.roadmap_models import RoadmapDocument
 
 REVIEW_INTERVALS = {1: 1, 2: 2, 3: 4, 4: 7, 5: 14}
 
@@ -35,7 +38,12 @@ def next_review_date(confidence: int, practiced_on: date | None = None) -> date:
     return (practiced_on or date.today()) + timedelta(days=REVIEW_INTERVALS[confidence])
 
 
-def build_daily_plan(questions: list[dict[str, Any]], target: date | None = None) -> dict[str, Any]:
+def build_daily_plan(
+    questions: list[dict[str, Any]],
+    target: date | None = None,
+    *,
+    roadmap: RoadmapDocument | None = None,
+) -> dict[str, Any]:
     target = target or date.today()
     due = sorted(
         (q for q in questions if q.get("next_review") and q["next_review"] <= target.isoformat()),
@@ -94,6 +102,13 @@ def build_daily_plan(questions: list[dict[str, Any]], target: date | None = None
             },
         ]
     )
+    if roadmap is not None:
+        # Import lazily so the original scheduler remains usable without loading
+        # roadmap persistence or seed data.
+        from tracker.roadmap import roadmap_daily_slots
+
+        roadmap_slots = roadmap_daily_slots(roadmap, questions, target)
+        items = [roadmap_slots.get(item["position"], item) for item in items]
     for item in items:
         item.update(status="not_started", minutes_spent=0, notes="")
     return {"date": target.isoformat(), "items": items}

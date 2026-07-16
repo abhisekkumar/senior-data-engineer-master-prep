@@ -12,6 +12,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from dashboard.components import metric_grid, question_table, resource_table
+from dashboard.roadmap_ui import render_roadmap, render_settings
 from dashboard.services import (
     dashboard_data,
     filter_questions,
@@ -22,6 +23,7 @@ from dashboard.services import (
     review_queues,
     update_daily_task,
 )
+from tracker.roadmap import ROADMAP_STATUSES, RoadmapError, find_item
 
 st.set_page_config(
     page_title="Senior Data Engineering Interview Prep",
@@ -29,7 +31,18 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
 )
-data = dashboard_data(persist_plan=True)
+try:
+    data = dashboard_data(persist_plan=True)
+except (OSError, RoadmapError, ValueError) as exc:
+    st.error(
+        f"The local tracker could not be loaded: {exc}",
+        icon=":material/error:",
+    )
+    st.info(
+        "Your existing data was not overwritten. Repair the reported JSON file or restore a "
+        "roadmap snapshot, then reload the app."
+    )
+    st.stop()
 
 
 def humanize(value: str) -> str:
@@ -63,7 +76,10 @@ with st.sidebar:
     )
     st.markdown("**Quick commands**")
     st.code("make sync\nmake daily\nmake dashboard", language="bash")
-    st.caption("All tracker data stays in local JSON files under `tracker/`.")
+    st.caption(
+        "Question history stays under `tracker/`; personal roadmap state stays in gitignored "
+        "`.local/` storage."
+    )
 
 st.title(":material/database: Senior Data Engineering Interview Prep")
 st.caption(
@@ -89,10 +105,12 @@ tabs = st.tabs(
     [
         ":material/dashboard: Overview",
         ":material/today: Today's five",
+        ":material/route: Roadmap",
         ":material/code: Question library",
         ":material/event_repeat: Review queue",
         ":material/library_books: Study library",
         ":material/monitoring: Progress",
+        ":material/settings: Settings",
     ]
 )
 
@@ -133,6 +151,15 @@ with tabs[1]:
         )
         title = question["title"] if question else item.get("topic", "Study task")
         status = item.get("status", "not_started")
+        roadmap_item = None
+        if item.get("roadmap_item_id"):
+            try:
+                roadmap_item = find_item(data["roadmap"], item["roadmap_item_id"])
+            except RoadmapError:
+                st.warning(
+                    f"This daily task references missing roadmap item {item['roadmap_item_id']}.",
+                    icon=":material/link_off:",
+                )
         expander_icon = ":material/task_alt:" if status == "completed" else ":material/pending:"
         with st.expander(
             f"{position}. {label}: {title} — {humanize(status)}",
@@ -146,6 +173,11 @@ with tabs[1]:
                     f":orange-badge[{humanize(question['difficulty'])}] "
                     f":green-badge[Confidence {question['confidence']}/5]"
                 )
+                if roadmap_item:
+                    st.markdown(
+                        f":violet-badge[Roadmap: {humanize(roadmap_item.status)}] "
+                        f":gray-badge[{humanize(roadmap_item.item_type)}]"
+                    )
                 st.code(question["file_path"], language=None)
                 st.markdown(f"[Open the local solution file]({path.as_uri()})")
                 if status == "not_started" and st.button(
@@ -176,6 +208,19 @@ with tabs[1]:
                         placeholder="heap_direction, boundary_condition",
                     )
                     notes = st.text_area("Practice notes")
+                    roadmap_status = None
+                    if roadmap_item:
+                        default_status = data["roadmap"].settings.default_success_status
+                        roadmap_status = st.selectbox(
+                            "Roadmap status after this attempt",
+                            ROADMAP_STATUSES,
+                            index=ROADMAP_STATUSES.index(default_status),
+                            format_func=humanize,
+                            help=(
+                                "Question confidence and roadmap readiness are separate. "
+                                "Completing the daily task never forces Mastered."
+                            ),
+                        )
                     st.markdown("**Interview skill scores (0–5)**")
                     score_columns = st.columns(3)
                     clarification = score_columns[0].slider("Clarifying questions", 0, 5, 3)
@@ -214,6 +259,7 @@ with tabs[1]:
                             status="completed",
                             minutes_spent=minutes,
                             notes=notes,
+                            roadmap_status=roadmap_status,
                         )
                         st.success(
                             f"Saved {attempt['attempt_id']} with confidence "
@@ -231,6 +277,14 @@ with tabs[1]:
                     )
                     minutes = st.number_input("Minutes spent", 0, 300, item.get("minutes_spent", 0))
                     notes = st.text_area("Notes", value=item.get("notes", ""))
+                    roadmap_status = None
+                    if roadmap_item:
+                        roadmap_status = st.selectbox(
+                            "Roadmap status",
+                            ROADMAP_STATUSES,
+                            index=ROADMAP_STATUSES.index(roadmap_item.status),
+                            format_func=humanize,
+                        )
                     if st.form_submit_button("Save task", icon=":material/save:"):
                         update_daily_task(
                             plan_date=data["today"]["date"],
@@ -238,11 +292,15 @@ with tabs[1]:
                             status=task_status,
                             minutes_spent=minutes,
                             notes=notes,
+                            roadmap_status=roadmap_status,
                         )
                         st.success("Task updated.", icon=":material/check_circle:")
                         st.rerun()
 
 with tabs[2]:
+    render_roadmap(data)
+
+with tabs[3]:
     st.subheader(":material/code: Question library")
     st.caption("Python, LeetCode, custom data-engineering exercises, and SQL in one tracker.")
     with st.container(border=True):
@@ -286,7 +344,7 @@ with tabs[2]:
     st.caption(f"{len(filtered)} matching exercises")
     question_table(filtered)
 
-with tabs[3]:
+with tabs[4]:
     st.subheader(":material/event_repeat: Review queue")
     st.caption("Prioritize due work, low confidence, and recurring mistakes.")
     for label, questions in review_queues(data["questions"]).items():
@@ -300,7 +358,7 @@ with tabs[3]:
             else:
                 st.caption("Nothing in this queue right now.")
 
-with tabs[4]:
+with tabs[5]:
     st.subheader(":material/library_books: Study library")
     st.caption("Browse public guides, SQL examples, system-design notes, and study plans.")
     first, second, third = st.columns([2, 1, 1])
@@ -327,7 +385,7 @@ with tabs[4]:
     st.caption(f"{len(filtered_resources)} matching resources")
     resource_table(filtered_resources)
 
-with tabs[5]:
+with tabs[6]:
     st.subheader(":material/monitoring: Progress")
     st.caption("Track practice consistency, confidence, timing, completion, and recurring mistakes.")
     progress = progress_data(data["questions"], data["attempts"])
@@ -352,3 +410,6 @@ with tabs[5]:
             with st.container(border=True):
                 st.markdown("### Average time by category")
                 render_chart(progress["average_minutes_by_category"], "bar")
+
+with tabs[7]:
+    render_settings(data)

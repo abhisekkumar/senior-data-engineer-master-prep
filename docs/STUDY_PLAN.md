@@ -2,6 +2,21 @@
 
 This plan is designed for consistent daily practice without turning the repository into a complicated application. Standard learning days contain five focused items and should take approximately 90–150 minutes.
 
+## Use this plan with the Preparation Roadmap
+
+The written 28-day plan is a suggested sequence; the dashboard roadmap is the editable source for
+your current phase, modules, and readiness. Question completion/confidence and roadmap readiness are
+separate: keep an item at Learning or Practicing until you can explain the recognition clue,
+complexity, trade-offs, and follow-ups independently.
+
+- Open **Roadmap** to update individual item status and review phase completion.
+- Use **Edit curriculum** to add or rearrange phases, modules, real-world problems, and resources.
+- Assign automatically discovered Python and SQL questions from **Unassigned questions**.
+- Choose the active phase and module under **Settings**.
+- Enable automatic advancement only if you want the app to move after every non-skipped required
+  item reaches at least Interview ready.
+- Export JSON for a restorable plan or Markdown for a readable review copy.
+
 ## Daily five-item format
 
 Use this order on every standard learning day:
@@ -373,3 +388,8 @@ make dashboard
 ```
 
 Open the URL printed by Streamlit, normally `http://localhost:8501`.
+
+Today's Five first looks for an overdue roadmap-linked review, then current-phase coding review and
+growth work, then technical and communication/real-world items. The existing scheduler fills any
+empty slot. Completing a daily task updates its daily status; you choose any roadmap status change
+explicitly, and the app never infers Mastered from a checkbox.

@@ -45,5 +45,99 @@
         "notes": ""
       }
     ]
+  },
+  {
+    "date": "2026-07-15",
+    "items": [
+      {
+        "position": 1,
+        "type": "coding_review",
+        "question_id": "leetcode-0001",
+        "status": "not_started",
+        "minutes_spent": 0,
+        "notes": ""
+      },
+      {
+        "position": 2,
+        "type": "coding_new",
+        "question_id": "sql-analytics-gaps-and-islands",
+        "status": "not_started",
+        "minutes_spent": 0,
+        "notes": ""
+      },
+      {
+        "position": 3,
+        "type": "python_fundamentals",
+        "topic": "mutable default arguments",
+        "status": "not_started",
+        "minutes_spent": 0,
+        "notes": ""
+      },
+      {
+        "position": 4,
+        "type": "external_study",
+        "area": "system_design",
+        "topic": "functional and non-functional requirements",
+        "status": "not_started",
+        "minutes_spent": 0,
+        "notes": ""
+      },
+      {
+        "position": 5,
+        "type": "external_study",
+        "area": "behavioral",
+        "topic": "most complex pipeline",
+        "status": "not_started",
+        "minutes_spent": 0,
+        "notes": ""
+      }
+    ]
+  },
+  {
+    "date": "2026-07-16",
+    "items": [
+      {
+        "position": 1,
+        "type": "coding_review",
+        "question_id": "leetcode-0001",
+        "status": "not_started",
+        "minutes_spent": 0,
+        "notes": ""
+      },
+      {
+        "position": 2,
+        "type": "coding_new",
+        "question_id": "sql-analytics-gaps-and-islands",
+        "status": "not_started",
+        "minutes_spent": 0,
+        "notes": ""
+      },
+      {
+        "position": 3,
+        "type": "python_fundamentals",
+        "topic": "SQL window functions",
+        "status": "not_started",
+        "minutes_spent": 0,
+        "notes": ""
+      },
+      {
+        "position": 4,
+        "type": "external_study",
+        "area": "spark",
+        "topic": "partitioning, shuffle, and skew",
+        "status": "not_started",
+        "minutes_spent": 0,
+        "notes": ""
+      },
+      {
+        "position": 5,
+        "type": "external_study",
+        "area": "troubleshooting",
+        "topic": "production incident from detection to prevention",
+        "status": "not_started",
+        "minutes_spent": 0,
+        "notes": ""
+      }
+    ]
   }
 ]
