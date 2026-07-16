@@ -74,30 +74,173 @@ def stable_new_id(prefix: str, title: str) -> str:
     return f"{prefix}-{_slug(title)[:40]}-{uuid4().hex[:8]}"
 
 
-def _phase_names() -> list[tuple[str, str, str]]:
+def _module_definitions() -> list[tuple[str, str, str, str]]:
     return [
-        ("A", "Arrays and Hashing", "Build fast lookup, set, frequency, and grouping instincts."),
-        ("B", "Two Pointers and Sorted Data", "Reason about ordered data with bounded state."),
-        ("C", "Sliding Window and Time Windows", "Recognize fixed and variable window problems."),
-        ("D", "Prefix Sum and Cumulative Analysis", "Use cumulative state for range analysis."),
-        ("E", "Intervals and Scheduling", "Model overlap, merging, availability, and scheduling."),
-        ("F", "Binary Search and Search on Answer", "Apply boundary invariants and monotonic search."),
-        ("G", "Stack and Monotonic Structures", "Use stacks for nested and next-greater relationships."),
-        ("H", "Heaps and Top-K Processing", "Select and stream ranked elements efficiently."),
-        ("I", "Linked Lists and Streaming Pointers", "Manipulate pointer state and streaming cursors."),
-        ("J", "Trees and Hierarchical Data", "Traverse and reason about hierarchical structures."),
-        ("K", "Graphs, DAGs, and Data Lineage", "Model dependencies, reachability, and lineage."),
-        ("L", "Greedy and Optimization", "Identify safe local choices and defend correctness."),
-        ("M", "Dynamic Programming", "Define state, transitions, and reusable subproblems."),
-        ("N", "Python Language Mastery", "Communicate Python semantics and write reliable code."),
-        ("O", "Advanced SQL", "Solve analytical, reconciliation, and data-quality SQL."),
-        ("P", "Spark and Distributed Processing", "Reason about partitions, shuffles, skew, and scale."),
-        ("Q", "Data Engineering Architecture", "Design reliable batch and streaming data platforms."),
-        ("R", "System Design", "Clarify requirements and defend scalable design trade-offs."),
-        ("S", "GenAI and LLM Systems", "Design and evaluate responsible data-aware LLM systems."),
-        ("T", "Behavioral and Resume Stories", "Deliver concise, evidence-based senior-level stories."),
-        ("U", "Real-World Data Engineering Problems", "Translate patterns into production constraints."),
-        ("V", "Mixed Mock Interviews", "Practice complete interview loops under realistic timing."),
+        (
+            "A",
+            "arrays-hashing",
+            "Arrays and Hashing",
+            "Build fast lookup, set, frequency, and grouping instincts.",
+        ),
+        (
+            "B",
+            "two-pointers-sorted-data",
+            "Two Pointers and Sorted Data",
+            "Reason about ordered data with bounded state.",
+        ),
+        (
+            "C",
+            "sliding-window-time-windows",
+            "Sliding Window and Time Windows",
+            "Recognize fixed and variable window problems.",
+        ),
+        (
+            "D",
+            "prefix-sum-cumulative-analysis",
+            "Prefix Sum and Cumulative Analysis",
+            "Use cumulative state for range analysis.",
+        ),
+        (
+            "E",
+            "intervals-scheduling",
+            "Intervals and Scheduling",
+            "Model overlap, merging, availability, and scheduling.",
+        ),
+        (
+            "F",
+            "binary-search-search-on-answer",
+            "Binary Search and Search on Answer",
+            "Apply boundary invariants and monotonic search.",
+        ),
+        (
+            "G",
+            "stack-monotonic-structures",
+            "Stack and Monotonic Structures",
+            "Use stacks for nested and next-greater relationships.",
+        ),
+        (
+            "H",
+            "heaps-top-k-processing",
+            "Heaps and Top-K Processing",
+            "Select and stream ranked elements efficiently.",
+        ),
+        (
+            "I",
+            "linked-lists-streaming-pointers",
+            "Linked Lists and Streaming Pointers",
+            "Manipulate pointer state and streaming cursors.",
+        ),
+        (
+            "J",
+            "trees-hierarchical-data",
+            "Trees and Hierarchical Data",
+            "Traverse and reason about hierarchical structures.",
+        ),
+        (
+            "K",
+            "graphs-dags-data-lineage",
+            "Graphs, DAGs, and Data Lineage",
+            "Model dependencies, reachability, and lineage.",
+        ),
+        (
+            "L",
+            "greedy-optimization",
+            "Greedy and Optimization",
+            "Identify safe local choices and defend correctness.",
+        ),
+        (
+            "M",
+            "dynamic-programming",
+            "Dynamic Programming",
+            "Define state, transitions, and reusable subproblems.",
+        ),
+        (
+            "N",
+            "python-language-mastery",
+            "Python Language Mastery",
+            "Communicate Python semantics and write reliable code.",
+        ),
+        (
+            "O",
+            "advanced-sql",
+            "Advanced SQL",
+            "Solve analytical, reconciliation, and data-quality SQL.",
+        ),
+        (
+            "P",
+            "spark-distributed-processing",
+            "Spark and Distributed Processing",
+            "Reason about partitions, shuffles, skew, and scale.",
+        ),
+        (
+            "Q",
+            "data-engineering-architecture",
+            "Data Engineering Architecture",
+            "Design reliable batch and streaming data platforms.",
+        ),
+        (
+            "R",
+            "system-design",
+            "System Design",
+            "Clarify requirements and defend scalable design trade-offs.",
+        ),
+        (
+            "S",
+            "genai-llm-systems",
+            "GenAI and LLM Systems",
+            "Design and evaluate responsible data-aware LLM systems.",
+        ),
+        (
+            "T",
+            "behavioral-resume-stories",
+            "Behavioral and Resume Stories",
+            "Deliver concise, evidence-based senior-level stories.",
+        ),
+        (
+            "U",
+            "real-world-data-engineering",
+            "Real-World Data Engineering Problems",
+            "Translate patterns into production constraints.",
+        ),
+        (
+            "V",
+            "mixed-mock-interviews",
+            "Mixed Mock Interviews",
+            "Practice complete interview loops under realistic timing.",
+        ),
+    ]
+
+
+def _stage_definitions() -> list[tuple[str, str, str, str, str]]:
+    return [
+        (
+            "stage-1-coding-patterns",
+            "Stage 1 — Coding patterns",
+            "Stage 1",
+            "Build reliable recognition and implementation across core coding patterns.",
+            "ABCDEFGH",
+        ),
+        (
+            "stage-2-advanced-algorithms",
+            "Stage 2 — Advanced data structures and algorithms",
+            "Stage 2",
+            "Strengthen pointer, hierarchy, graph, greedy, and dynamic-programming reasoning.",
+            "IJKLM",
+        ),
+        (
+            "stage-3-data-engineering-core",
+            "Stage 3 — Data engineering core",
+            "Stage 3",
+            "Master Python, SQL, Spark, and data-platform architecture.",
+            "NOPQ",
+        ),
+        (
+            "stage-4-interview-execution",
+            "Stage 4 — Design and interview execution",
+            "Stage 4",
+            "Practice system design, GenAI, behavioral delivery, production scenarios, and mocks.",
+            "RSTUV",
+        ),
     ]
 
 
@@ -113,6 +256,7 @@ def _seed_item(
     context: str = "",
     criteria: str = "",
     resources: list[str] | None = None,
+    description: str = "",
 ) -> RoadmapItem:
     linked = [question_id] if question_id and question_id in available_question_ids else []
     return RoadmapItem(
@@ -121,6 +265,7 @@ def _seed_item(
         title=title,
         item_type=item_type,
         order=order,
+        description=description,
         linked_question_ids=linked,
         linked_resource_paths=resources or [],
         required=required,
@@ -129,7 +274,7 @@ def _seed_item(
     )
 
 
-def _phase_a_modules(available_question_ids: set[str]) -> list[Module]:
+def _module_a_items(available_question_ids: set[str]) -> list[RoadmapItem]:
     definitions: list[tuple[str, str, str, list[dict[str, Any]]]] = [
         (
             "duplicate-detection",
@@ -231,67 +376,196 @@ def _phase_a_modules(available_question_ids: set[str]) -> list[Module]:
             ],
         ),
     ]
-    modules: list[Module] = []
-    for module_order, (slug, name, description, item_defs) in enumerate(definitions, start=1):
-        module_id = f"phase-a-{slug}"
-        items = [
-            _seed_item(
-                module_id,
-                item_order,
-                definition["title"],
-                definition["type"],
-                question_id=definition.get("qid"),
-                available_question_ids=available_question_ids,
-                context=definition.get("context", ""),
-                criteria="Explain the approach, trade-offs, complexity, and production follow-ups.",
-                resources=(
-                    ["docs/REAL_WORLD_PROBLEM_TEMPLATE.md"]
-                    if definition["type"] == "real_world_problem"
-                    else []
-                ),
+    module_id = "module-a-arrays-hashing"
+    items: list[RoadmapItem] = []
+    for _slug, topic, description, item_defs in definitions:
+        for definition in item_defs:
+            items.append(
+                _seed_item(
+                    module_id,
+                    len(items) + 1,
+                    definition["title"],
+                    definition["type"],
+                    question_id=definition.get("qid"),
+                    available_question_ids=available_question_ids,
+                    context=definition.get("context", ""),
+                    criteria=(
+                        "Explain the approach, trade-offs, complexity, and production follow-ups."
+                    ),
+                    resources=(
+                        ["docs/REAL_WORLD_PROBLEM_TEMPLATE.md"]
+                        if definition["type"] == "real_world_problem"
+                        else []
+                    ),
+                    description=f"{topic}: {description}",
+                )
             )
-            for item_order, definition in enumerate(item_defs, start=1)
-        ]
-        modules.append(
+    return items
+
+
+def _seed_stages(available_question_ids: set[str]) -> list[Phase]:
+    module_lookup = {
+        letter: (slug, name, objective) for letter, slug, name, objective in _module_definitions()
+    }
+    stages: list[Phase] = []
+    for stage_order, (stage_id, name, short_name, objective, letters) in enumerate(
+        _stage_definitions(), start=1
+    ):
+        modules = [
             Module(
-                id=module_id,
-                phase_id="phase-a",
-                name=name,
-                description=description,
+                id=f"module-{letter.casefold()}-{module_lookup[letter][0]}",
+                phase_id=stage_id,
+                name=f"Module {letter} — {module_lookup[letter][1]}",
+                description=module_lookup[letter][2],
                 order=module_order,
                 completion_criteria="All required items are at least interview ready.",
-                items=items,
+                items=_module_a_items(available_question_ids) if letter == "A" else [],
+            )
+            for module_order, letter in enumerate(letters, start=1)
+        ]
+        stages.append(
+            Phase(
+                id=stage_id,
+                name=name,
+                short_name=short_name,
+                description=objective,
+                objective=objective,
+                order=stage_order,
+                active=stage_order == 1,
+                modules=modules,
             )
         )
-    return modules
+    return stages
 
 
 def seed_roadmap(question_ids: Iterable[str] = ()) -> RoadmapDocument:
     available = set(question_ids)
-    phases = [
-        Phase(
-            id=f"phase-{letter.casefold()}",
-            name=f"Phase {letter} — {name}",
-            short_name=f"Phase {letter}",
-            description=objective,
-            objective=objective,
-            order=order,
-            active=letter == "A",
-            modules=_phase_a_modules(available) if letter == "A" else [],
-        )
-        for order, (letter, name, objective) in enumerate(_phase_names(), start=1)
-    ]
     return RoadmapDocument(
+        schema_version=2,
         programs=[
             Program(
                 id="senior-data-engineering-master-prep",
                 name="Senior Data Engineering Master Prep",
                 description="An editable, local-first curriculum for senior data engineering interviews.",
-                phases=phases,
+                phases=_seed_stages(available),
             )
         ],
         settings=RoadmapSettings(),
     )
+
+
+def _legacy_module_name(phase: Phase, letter: str) -> str:
+    phase_prefix = re.compile(rf"^phase\s+{letter}\b", re.IGNORECASE)
+    if phase_prefix.search(phase.name):
+        return phase_prefix.sub(f"Module {letter}", phase.name, count=1)
+    return f"Module {letter} — {phase.name}"
+
+
+def migrate_legacy_roadmap(document: RoadmapDocument) -> RoadmapDocument:
+    """Convert schema 1's A–V subject phases into schema 2 subject modules."""
+    if document.schema_version == 2:
+        return document
+
+    migrated = RoadmapDocument.from_dict(document.to_dict())
+    module_definitions = {
+        letter: (slug, name, objective) for letter, slug, name, objective in _module_definitions()
+    }
+    stage_definitions = _stage_definitions()
+    active_phase_id = migrated.settings.active_phase_id
+    active_module_id = migrated.settings.active_module_id
+    active_stage_id: str | None = None
+    active_subject_module_id: str | None = None
+
+    for program in migrated.programs:
+        if program.id != "senior-data-engineering-master-prep":
+            continue
+
+        standard_phases: dict[str, Phase] = {}
+        custom_stages: list[Phase] = []
+        for phase in sorted(program.phases, key=lambda value: value.order):
+            match = re.fullmatch(r"phase-([a-v])", phase.id)
+            if match:
+                standard_phases[match.group(1).upper()] = phase
+            else:
+                custom_stages.append(phase)
+
+        if not standard_phases:
+            continue
+
+        stages: list[Phase] = []
+        for stage_order, (stage_id, name, short_name, objective, letters) in enumerate(
+            stage_definitions, start=1
+        ):
+            stage_modules: list[Module] = []
+            for letter in letters:
+                legacy_phase = standard_phases.get(letter)
+                if legacy_phase is None:
+                    continue
+                slug, _default_name, _default_objective = module_definitions[letter]
+                module_id = f"module-{letter.casefold()}-{slug}"
+                items: list[RoadmapItem] = []
+                for legacy_module in sorted(legacy_phase.modules, key=lambda value: value.order):
+                    for item in sorted(legacy_module.items, key=lambda value: value.order):
+                        item.module_id = module_id
+                        item.order = len(items) + 1
+                        topic = f"Topic: {legacy_module.name}"
+                        if topic not in item.description:
+                            item.description = (
+                                f"{topic}\n\n{item.description}" if item.description else topic
+                            )
+                        items.append(item)
+                subject_module = Module(
+                    id=module_id,
+                    phase_id=stage_id,
+                    name=_legacy_module_name(legacy_phase, letter),
+                    order=len(stage_modules) + 1,
+                    description=legacy_phase.objective or legacy_phase.description,
+                    completion_criteria="All required items are at least interview ready.",
+                    archived=legacy_phase.archived,
+                    items=items,
+                    created_at=legacy_phase.created_at,
+                    updated_at=legacy_phase.updated_at,
+                )
+                stage_modules.append(subject_module)
+                if legacy_phase.id == active_phase_id:
+                    active_stage_id = stage_id
+                    active_subject_module_id = module_id
+                elif any(
+                    legacy_module.id == active_module_id for legacy_module in legacy_phase.modules
+                ):
+                    active_stage_id = stage_id
+                    active_subject_module_id = module_id
+            stages.append(
+                Phase(
+                    id=stage_id,
+                    name=name,
+                    short_name=short_name,
+                    order=stage_order,
+                    description=objective,
+                    objective=objective,
+                    active=stage_id == active_stage_id,
+                    archived=bool(stage_modules)
+                    and all(module.archived for module in stage_modules),
+                    modules=stage_modules,
+                    created_at=document.created_at,
+                    updated_at=document.updated_at,
+                )
+            )
+
+        for custom_stage in custom_stages:
+            custom_stage.order = len(stages) + 1
+            stages.append(custom_stage)
+            if custom_stage.id == active_phase_id:
+                active_stage_id = custom_stage.id
+                active_subject_module_id = active_module_id
+        program.phases = stages
+
+    migrated.schema_version = 2
+    if active_stage_id:
+        migrated.settings.active_phase_id = active_stage_id
+        migrated.settings.active_module_id = active_subject_module_id
+    refresh_completion(migrated)
+    return RoadmapDocument.from_dict(migrated.to_dict())
 
 
 def load_roadmap(
@@ -299,6 +573,7 @@ def load_roadmap(
     *,
     seed_question_ids: Iterable[str] = (),
     seed_if_missing: bool = True,
+    persist_migration: bool = True,
 ) -> RoadmapDocument:
     target = path or roadmap_path()
     if not target.exists():
@@ -312,9 +587,14 @@ def load_roadmap(
     except json.JSONDecodeError as exc:
         raise RoadmapError(f"Invalid JSON in {target}: {exc}") from exc
     try:
-        return RoadmapDocument.from_dict(raw)
+        document = RoadmapDocument.from_dict(raw)
     except (TypeError, ValueError) as exc:
         raise RoadmapError(f"Roadmap validation failed for {target}: {exc}") from exc
+    if document.schema_version == 1:
+        document = migrate_legacy_roadmap(document)
+        if persist_migration:
+            save_roadmap(document, target, destructive=True)
+    return document
 
 
 def create_snapshot(path: Path | None = None) -> Path:
@@ -336,6 +616,7 @@ def save_roadmap(
     destructive: bool = False,
 ) -> None:
     target = path or roadmap_path()
+    document = migrate_legacy_roadmap(document)
     refresh_completion(document)
     document.updated_at = timestamp()
     try:
@@ -370,7 +651,7 @@ def restore_snapshot(snapshot: Path, path: Path | None = None) -> RoadmapDocumen
     target = path or roadmap_path()
     if snapshot not in list_snapshots(target):
         raise RoadmapError("Selected roadmap snapshot is not in the local snapshot directory")
-    restored = load_roadmap(snapshot, seed_if_missing=False)
+    restored = load_roadmap(snapshot, seed_if_missing=False, persist_migration=False)
     if target.exists():
         create_snapshot(target)
     save_roadmap(restored, target)
@@ -389,6 +670,7 @@ def import_roadmap_json(raw: str | bytes, path: Path | None = None) -> RoadmapDo
         raise RoadmapError(f"Roadmap import failed validation: {exc}") from exc
     if not document.programs:
         raise RoadmapError("Roadmap import must contain at least one program")
+    document = migrate_legacy_roadmap(document)
     save_roadmap(document, path, destructive=True)
     return document
 
@@ -424,20 +706,14 @@ def export_roadmap_markdown(document: RoadmapDocument) -> str:
                         if item.linked_question_ids
                         else ""
                     )
-                    lines.append(
-                        f"- [{marker}] {item.title}{optional} — {item.status}{links}"
-                    )
+                    lines.append(f"- [{marker}] {item.title}{optional} — {item.status}{links}")
                 lines.append("")
     return "\n".join(lines).rstrip() + "\n"
 
 
 def active_program(document: RoadmapDocument) -> Program:
     program = next(
-        (
-            value
-            for value in document.programs
-            if value.id == document.settings.active_program_id
-        ),
+        (value for value in document.programs if value.id == document.settings.active_program_id),
         None,
     )
     if program is None:
@@ -559,7 +835,12 @@ def archive_phase(document: RoadmapDocument, phase_id: str, archived: bool = Tru
         )
         document.settings.active_phase_id = replacement.id if replacement else None
         document.settings.active_module_id = (
-            replacement.modules[0].id if replacement and replacement.modules else None
+            next(
+                (module.id for module in replacement.modules if not module.archived),
+                None,
+            )
+            if replacement
+            else None
         )
         for candidate in active_program(document).phases:
             candidate.active = replacement is not None and candidate.id == replacement.id
@@ -598,6 +879,22 @@ def update_module(document: RoadmapDocument, module_id: str, **changes: Any) -> 
     module.updated_at = timestamp()
     Module.from_dict(module.to_dict())
     return module
+
+
+def archive_module(document: RoadmapDocument, module_id: str, archived: bool = True) -> None:
+    module = find_module(document, module_id)
+    module.archived = archived
+    module.updated_at = timestamp()
+    if archived and document.settings.active_module_id == module_id:
+        stage = find_phase(document, module.phase_id)
+        document.settings.active_module_id = next(
+            (
+                candidate.id
+                for candidate in sorted(stage.modules, key=lambda value: value.order)
+                if not candidate.archived
+            ),
+            None,
+        )
 
 
 def move_module(
@@ -764,7 +1061,9 @@ def unresolved_question_links(
 ) -> dict[str, list[str]]:
     available = {question["id"] for question in questions}
     return {
-        item.id: [question_id for question_id in item.linked_question_ids if question_id not in available]
+        item.id: [
+            question_id for question_id in item.linked_question_ids if question_id not in available
+        ]
         for item in iter_items(document)
         if any(question_id not in available for question_id in item.linked_question_ids)
     }
@@ -779,13 +1078,12 @@ def unassigned_questions(
     return [question for question in questions if question["id"] not in assigned]
 
 
-def phase_progress(
-    phase: Phase,
+def _item_progress(
+    items: list[RoadmapItem],
     questions: list[dict[str, Any]] | None = None,
     *,
     target: date | None = None,
 ) -> dict[str, int | float]:
-    items = [item for module in phase.modules for item in module.items]
     required = [item for item in items if item.required and item.status != "skipped"]
     completed = [item for item in required if item.status in READY_STATUSES]
     readiness = [item for item in required if item.status in READY_STATUSES]
@@ -794,14 +1092,6 @@ def phase_progress(
         sum(STATUS_WEIGHTS[item.status] for item in required) / len(required) * 100
         if required
         else 0.0
-    )
-    modules_completed = sum(
-        bool(module.items)
-        and all(
-            item.status in READY_STATUSES or not item.required or item.status == "skipped"
-            for item in module.items
-        )
-        for module in phase.modules
     )
     question_map = {question["id"]: question for question in questions or []}
     linked_map = {
@@ -813,8 +1103,7 @@ def phase_progress(
     linked = list(linked_map.values())
     today = target or date.today()
     overdue = sum(
-        bool(question.get("next_review"))
-        and date.fromisoformat(question["next_review"]) < today
+        bool(question.get("next_review")) and date.fromisoformat(question["next_review"]) < today
         for question in linked
     )
     return {
@@ -822,16 +1111,12 @@ def phase_progress(
         "required_items": len(required),
         "remaining_required_items": len(required) - len(completed),
         "completion_percentage": round(completion, 1),
-        "modules_completed": modules_completed,
-        "module_count": len(phase.modules),
         "interview_ready_count": len(readiness),
         "interview_ready_percentage": round(len(readiness) / len(required) * 100, 1)
         if required
         else 0.0,
         "mastered_count": len(mastered),
-        "mastered_percentage": round(len(mastered) / len(required) * 100, 1)
-        if required
-        else 0.0,
+        "mastered_percentage": round(len(mastered) / len(required) * 100, 1) if required else 0.0,
         "weak_linked_questions": len(
             {question["id"] for question in linked if question.get("confidence", 1) <= 2}
         ),
@@ -839,12 +1124,52 @@ def phase_progress(
     }
 
 
+def module_progress(
+    module: Module,
+    questions: list[dict[str, Any]] | None = None,
+    *,
+    target: date | None = None,
+) -> dict[str, int | float]:
+    return _item_progress(module.items, questions, target=target)
+
+
+def phase_progress(
+    phase: Phase,
+    questions: list[dict[str, Any]] | None = None,
+    *,
+    target: date | None = None,
+) -> dict[str, int | float]:
+    modules = [module for module in phase.modules if not module.archived]
+    items = [item for module in modules for item in module.items]
+    metrics = _item_progress(items, questions, target=target)
+    metrics.update(
+        {
+            "modules_completed": sum(
+                bool(module.items)
+                and all(
+                    item.status in READY_STATUSES or not item.required or item.status == "skipped"
+                    for item in module.items
+                )
+                for module in modules
+            ),
+            "module_count": len(modules),
+        }
+    )
+    return metrics
+
+
 def program_progress(
     document: RoadmapDocument, questions: list[dict[str, Any]] | None = None
 ) -> dict[str, int | float]:
     program = active_program(document)
     visible = [phase for phase in program.phases if not phase.archived]
-    items = [item for phase in visible for module in phase.modules for item in module.items]
+    items = [
+        item
+        for phase in visible
+        for module in phase.modules
+        if not module.archived
+        for item in module.items
+    ]
     required = [item for item in items if item.required and item.status != "skipped"]
     weighted = sum(STATUS_WEIGHTS[item.status] for item in required)
     question_map = {question["id"]: question for question in questions or []}
@@ -883,6 +1208,7 @@ def refresh_completion(document: RoadmapDocument) -> None:
             required = [
                 item
                 for module in phase.modules
+                if not module.archived
                 for item in module.items
                 if item.required and item.status != "skipped"
             ]
@@ -902,6 +1228,7 @@ def phase_is_interview_ready(phase: Phase) -> bool:
     required = [
         item
         for module in phase.modules
+        if not module.archived
         for item in module.items
         if item.required and item.status != "skipped"
     ]
@@ -933,9 +1260,18 @@ def set_active_phase(
         module = find_module(document, module_id)
         if module.phase_id != phase_id:
             raise RoadmapError("The active module must belong to the active phase")
+        if module.archived:
+            raise RoadmapError("An archived module cannot be active")
         document.settings.active_module_id = module_id
     else:
-        document.settings.active_module_id = phase.modules[0].id if phase.modules else None
+        document.settings.active_module_id = next(
+            (
+                module.id
+                for module in sorted(phase.modules, key=lambda value: value.order)
+                if not module.archived
+            ),
+            None,
+        )
 
 
 def maybe_advance_phase(document: RoadmapDocument) -> bool:
@@ -945,7 +1281,9 @@ def maybe_advance_phase(document: RoadmapDocument) -> bool:
     if not settings.active_phase_id:
         return False
     program = active_program(document)
-    phases = sorted((phase for phase in program.phases if not phase.archived), key=lambda p: p.order)
+    phases = sorted(
+        (phase for phase in program.phases if not phase.archived), key=lambda p: p.order
+    )
     current = find_phase(document, settings.active_phase_id)
     if not phase_is_interview_ready(current):
         return False
@@ -982,9 +1320,7 @@ def filter_roadmap_items(
                     continue
                 for item in module.items:
                     linked_questions = [
-                        question_map[qid]
-                        for qid in item.linked_question_ids
-                        if qid in question_map
+                        question_map[qid] for qid in item.linked_question_ids if qid in question_map
                     ]
                     is_overdue = any(
                         question.get("next_review")
@@ -1006,9 +1342,13 @@ def filter_roadmap_items(
                         continue
                     if confidence is not None and confidence not in linked_confidences:
                         continue
-                    if query and query not in " ".join(
-                        [item.title, item.description, item.notes, module.name, phase.name]
-                    ).casefold():
+                    if (
+                        query
+                        and query
+                        not in " ".join(
+                            [item.title, item.description, item.notes, module.name, phase.name]
+                        ).casefold()
+                    ):
                         continue
                     results.append(item)
     return results
@@ -1023,10 +1363,15 @@ def roadmap_daily_slots(
         return {}
     phase = find_phase(document, document.settings.active_phase_id)
     question_map = {question["id"]: question for question in questions}
-    modules = sorted(phase.modules, key=lambda module: module.order)
+    modules = sorted(
+        (module for module in phase.modules if not module.archived),
+        key=lambda module: module.order,
+    )
     if document.settings.active_module_id:
         modules.sort(key=lambda module: module.id != document.settings.active_module_id)
-    items = [item for module in modules for item in sorted(module.items, key=lambda item: item.order)]
+    items = [
+        item for module in modules for item in sorted(module.items, key=lambda item: item.order)
+    ]
     all_items = [
         item
         for candidate_phase in sorted(
@@ -1035,6 +1380,7 @@ def roadmap_daily_slots(
         )
         if not candidate_phase.archived
         for module in sorted(candidate_phase.modules, key=lambda value: value.order)
+        if not module.archived
         for item in sorted(module.items, key=lambda value: value.order)
     ]
     used: set[str] = set()
@@ -1057,42 +1403,48 @@ def roadmap_daily_slots(
         all_items,
     )
     coding_review = choose(
-        lambda item: item.item_type in {"coding_question", "coding_review"}
-        and bool(item.linked_question_ids)
-        and any(
-            question_map.get(question_id, {}).get("status") == "completed"
-            for question_id in item.linked_question_ids
+        lambda item: (
+            item.item_type in {"coding_question", "coding_review"}
+            and bool(item.linked_question_ids)
+            and any(
+                question_map.get(question_id, {}).get("status") == "completed"
+                for question_id in item.linked_question_ids
+            )
         )
     )
     learning = choose(
-        lambda item: item.status in {"not_started", "learning", "practicing"}
-        and item.item_type in {"coding_question", "coding_review"}
+        lambda item: (
+            item.status in {"not_started", "learning", "practicing"}
+            and item.item_type in {"coding_question", "coding_review"}
+        )
     )
     technical = choose(
-        lambda item: item.status not in READY_STATUSES | {"skipped"}
-        and item.item_type
-        in {
-            "sql_question",
-            "python_fundamentals",
-            "spark_question",
-            "data_engineering",
-            "system_design",
-            "documentation",
-        }
+        lambda item: (
+            item.status not in READY_STATUSES | {"skipped"}
+            and item.item_type
+            in {
+                "sql_question",
+                "python_fundamentals",
+                "spark_question",
+                "data_engineering",
+                "system_design",
+                "documentation",
+            }
+        )
     )
     communication = choose(
-        lambda item: item.status not in READY_STATUSES | {"skipped"}
-        and item.item_type
-        in {"real_world_problem", "behavioral", "genai", "mock_interview", "custom"}
+        lambda item: (
+            item.status not in READY_STATUSES | {"skipped"}
+            and item.item_type
+            in {"real_world_problem", "behavioral", "genai", "mock_interview", "custom"}
+        )
     )
     selected = {1: overdue, 2: coding_review, 3: learning, 4: technical, 5: communication}
     slots: dict[int, dict[str, Any]] = {}
     for position, item in selected.items():
         if item is None:
             continue
-        question_id = next(
-            (qid for qid in item.linked_question_ids if qid in question_map), None
-        )
+        question_id = next((qid for qid in item.linked_question_ids if qid in question_map), None)
         slots[position] = {
             "position": position,
             "type": item.item_type,
@@ -1109,6 +1461,7 @@ __all__ = [
     "ROADMAP_ITEM_TYPES",
     "ROADMAP_STATUSES",
     "RoadmapError",
+    "archive_module",
     "archive_phase",
     "assign_question_to_module",
     "create_item",
@@ -1125,7 +1478,9 @@ __all__ = [
     "import_roadmap_json",
     "list_snapshots",
     "load_roadmap",
+    "migrate_legacy_roadmap",
     "maybe_advance_phase",
+    "module_progress",
     "move_item",
     "move_module",
     "move_phase",

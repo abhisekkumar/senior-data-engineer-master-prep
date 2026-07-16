@@ -121,6 +121,7 @@ class Module:
     order: int
     description: str = ""
     completion_criteria: str = ""
+    archived: bool = False
     items: list[RoadmapItem] = field(default_factory=list)
     created_at: str = field(default_factory=timestamp)
     updated_at: str = field(default_factory=timestamp)
@@ -212,8 +213,7 @@ class Program:
         _require_text(self.id, "program id")
         _require_text(self.name, "program name")
         self.phases = [
-            phase if isinstance(phase, Phase) else Phase.from_dict(phase)
-            for phase in self.phases
+            phase if isinstance(phase, Phase) else Phase.from_dict(phase) for phase in self.phases
         ]
         _validate_timestamp(self.created_at, "created_at")
         _validate_timestamp(self.updated_at, "updated_at")
@@ -229,8 +229,8 @@ class Program:
 @dataclass(slots=True)
 class RoadmapSettings:
     active_program_id: str = "senior-data-engineering-master-prep"
-    active_phase_id: str | None = "phase-a"
-    active_module_id: str | None = "phase-a-duplicate-detection"
+    active_phase_id: str | None = "stage-1-coding-patterns"
+    active_module_id: str | None = "module-a-arrays-hashing"
     automatic_advancement: bool = False
     manual_phase_mode: bool = True
     default_success_status: str = "interview_ready"
@@ -250,14 +250,14 @@ class RoadmapSettings:
 
 @dataclass(slots=True)
 class RoadmapDocument:
-    schema_version: int = 1
+    schema_version: int = 2
     programs: list[Program] = field(default_factory=list)
     settings: RoadmapSettings = field(default_factory=RoadmapSettings)
     created_at: str = field(default_factory=timestamp)
     updated_at: str = field(default_factory=timestamp)
 
     def __post_init__(self) -> None:
-        if self.schema_version != 1:
+        if self.schema_version not in {1, 2}:
             raise ValueError(f"unsupported roadmap schema_version: {self.schema_version}")
         self.programs = [
             program if isinstance(program, Program) else Program.from_dict(program)

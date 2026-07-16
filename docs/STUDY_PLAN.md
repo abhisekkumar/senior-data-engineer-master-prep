@@ -5,14 +5,14 @@ This plan is designed for consistent daily practice without turning the reposito
 ## Use this plan with the Preparation Roadmap
 
 The written 28-day plan is a suggested sequence; the dashboard roadmap is the editable source for
-your current phase, modules, and readiness. Question completion/confidence and roadmap readiness are
+your current stage, modules, and readiness. Question completion/confidence and roadmap readiness are
 separate: keep an item at Learning or Practicing until you can explain the recognition clue,
 complexity, trade-offs, and follow-ups independently.
 
-- Open **Roadmap** to update individual item status and review phase completion.
-- Use **Edit curriculum** to add or rearrange phases, modules, real-world problems, and resources.
+- Open **Roadmap** to update individual item status and review stage/module completion.
+- Use **Edit curriculum** to add or rearrange stages, modules, real-world problems, and resources.
 - Assign automatically discovered Python and SQL questions from **Unassigned questions**.
-- Choose the active phase and module under **Settings**.
+- Choose the active stage and module under **Settings**.
 - Enable automatic advancement only if you want the app to move after every non-skipped required
   item reaches at least Interview ready.
 - Export JSON for a restorable plan or Markdown for a readable review copy.

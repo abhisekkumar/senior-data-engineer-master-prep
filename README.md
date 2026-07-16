@@ -24,7 +24,7 @@ unstructured collection of solutions.
 - An interview template around every migrated solution, with the original code preserved
 - Confidence-based spaced repetition and an append-only practice log
 - A five-item daily plan covering coding, fundamentals, engineering, and communication
-- An editable Phase A–V preparation roadmap with weighted readiness, question/resource links,
+- An editable preparation roadmap with four stages, subject Modules A–V, weighted readiness, question/resource links,
   real-world exercises, local snapshots, and JSON/Markdown portability
 - Automatic catalog synchronization for new Python, data-engineering, and SQL solutions
 - A polished local Streamlit dashboard with study resources, filters, review queues, and charts
@@ -110,7 +110,7 @@ The dashboard provides:
 - Summary metrics, source/pattern breakdowns, and today's completion progress
 - Today's five tasks, local file links, status updates, and practice forms
 - A secure in-dashboard viewer for linked solution and study-resource files
-- An editable Preparation Roadmap with phase/module/item progress and quick readiness updates
+- An editable Preparation Roadmap with stage/module/item progress and quick readiness updates
 - Unassigned-question linking without copying or changing catalog records
 - Roadmap settings, JSON/Markdown export, validated import, and local snapshot restoration
 - Python, custom data-engineering, and SQL catalog synchronization whenever the app opens
@@ -127,29 +127,31 @@ The existing tracker writes to `tracker/questions.json`, `tracker/practice_log.j
 
 ## Preparation roadmap
 
-Open **Roadmap** to answer four practical questions quickly: which phase is active, how much is
+Open **Roadmap** to answer four practical questions quickly: which stage and module are active, how much is
 ready, what is weak or overdue, and what should be studied next. The editable hierarchy is:
 
 ```text
-Program → Phase → Module → Roadmap item
+Program → Preparation stage → Subject module → Roadmap item
 ```
 
 Roadmap items can represent coding questions, SQL, Spark, Python fundamentals, architecture,
 system design, behavioral/GenAI preparation, mocks, documentation, or real-world production
 problems. Use the item status control to move from **Not started** through **Learning**,
 **Practicing**, **Interview ready**, and **Mastered**, or mark an item **Skipped**. Required items
-drive weighted phase completion; optional items do not block readiness.
+drive weighted stage and module completion; optional items do not block readiness.
 
 Catalog and roadmap state intentionally remain separate. A Python or SQL question can be complete
 and have confidence 4/5 while its roadmap item remains Practicing until you can solve, explain,
 and defend it independently. Linking or unlinking a question never changes its attempts, review
 dates, confidence, or solution file.
 
-Use **Roadmap → Edit curriculum** to add or edit phases, modules, and items. Use **Unassigned
+The default curriculum has four preparation stages and subject **Modules A–V**. Use **Roadmap →
+Edit curriculum** to add or edit stages, modules, and items. The **Edit module** button on a module
+card opens that exact module in the curriculum editor. Use **Unassigned
 questions** to attach an automatically discovered catalog entry to a module. Use **Settings** to
-choose the active phase/module, configure automatic advancement, export or import the plan, create
+choose the active stage/module, configure automatic advancement, export or import the plan, create
 a snapshot, or restore an earlier local version. Automatic advancement is allowed only after all
-non-skipped required items in the current phase are at least Interview ready; manual switching
+non-skipped required items in the current stage are at least Interview ready; manual switching
 requires an explicit override when that gate is not met.
 
 Real-world exercises can link a Markdown file and store draft scenario fields directly in the
@@ -197,8 +199,8 @@ TODO when the mapping is uncertain.
 Run `make daily` or open the **Today's Five** dashboard tab. A standard day contains:
 
 1. One overdue roadmap-linked review
-2. One current-phase coding review
-3. One current-phase new, learning, or practicing item
+2. One current-stage coding review
+3. One current-stage new, learning, or practicing item
 4. One SQL, Python fundamentals, Spark, data-engineering, or system-design item
 5. One real-world, behavioral, GenAI, or mock-interview item
 

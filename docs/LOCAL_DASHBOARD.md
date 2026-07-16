@@ -64,20 +64,20 @@ mode-specific sidebar.
 - Records time and notes for non-coding work
 - Records a complete coding attempt with confidence, hints, mistakes, and interview scores
 - Applies confidence caps and schedules the next review automatically
-- Prioritizes overdue and current-phase roadmap items when an active roadmap phase has suitable work
+- Prioritizes overdue and current-stage roadmap items when an active roadmap stage has suitable work
 - Lets you select a separate roadmap status after completing a linked daily item
 
 ### Roadmap
 
-- Shows the active program and phase, weighted completion, readiness, mastery, overdue reviews,
+- Shows the active program, stage, and module, weighted completion, readiness, mastery, overdue reviews,
   weak linked questions, and unassigned catalog questions
-- Expands Phase A–V into ordered modules and roadmap items
+- Groups subject Modules A–V into four ordered preparation stages
 - Updates an item's Not started, Learning, Practicing, Interview ready, Mastered, or Skipped status
   without changing question confidence
-- Filters by phase, module, status, item type, requirement, question link, overdue state,
+- Filters by stage, module, status, item type, requirement, question link, overdue state,
   confidence, and text
-- Creates, edits, reorders, archives, and restores phases
-- Creates, edits, moves, and reorders modules and items
+- Creates, edits, reorders, archives, and restores stages
+- Creates, edits, moves, reorders, archives, and restores modules and items
 - Links multiple catalog questions and study-resource/exercise paths
 - Opens linked solution and resource files in a repository-scoped dashboard viewer with line
   numbers, syntax highlighting, and an optional download
@@ -117,11 +117,11 @@ Filter by:
 
 ### Settings
 
-- Selects the active program, phase, and module
-- Enables automatic advancement or manual phase mode
-- Requires an explicit override to leave an incomplete phase
+- Selects the active program, stage, and module
+- Enables automatic advancement or manual stage mode
+- Requires an explicit override to leave an incomplete stage
 - Chooses the default successful-completion roadmap status
-- Shows or hides archived phases
+- Shows or hides archived stages and modules
 - Changes the local roadmap directory without deleting the old file
 - Exports JSON or readable Markdown
 - Validates imported JSON before creating a snapshot and replacing the roadmap
@@ -168,9 +168,10 @@ Settings; a small gitignored location pointer lets the app find it on the next r
 roadmap is preserved when moving storage.
 
 Seeding happens only when no roadmap exists. The initial editable program is **Senior Data
-Engineering Master Prep**, with Phase A–V defaults and detailed Phase A modules. Existing roadmap
-files are validated and never replaced by seed data. Malformed files produce an error and remain
-untouched.
+Engineering Master Prep**, with four preparation stages, subject Modules A–V, and detailed Module A
+items. Existing roadmap files are validated and never replaced by seed data. Schema 1 roadmaps are
+snapshotted before the A–V subjects are migrated to modules. Malformed files produce an error and
+remain untouched.
 
 ## Question status versus roadmap status
 
@@ -187,11 +188,12 @@ append-only practice history.
 ## Editing the curriculum
 
 1. Open **Roadmap → Edit curriculum**.
-2. Create or select a phase, module, or item.
+2. Create or select a stage, module, or item. A module card's **Edit module** button selects that
+   exact module in the editor.
 3. Link existing question IDs or public study-resource paths as needed.
 4. Save; the page refreshes immediately and the change survives restarts.
 
-New Python and SQL files continue to enter the automatic catalog but are not forced into a phase.
+New Python and SQL files continue to enter the automatic catalog but are not forced into a module.
 Assign them from **Roadmap → Unassigned questions**. For production scenarios, start a linked file
 from [`REAL_WORLD_PROBLEM_TEMPLATE.md`](REAL_WORLD_PROBLEM_TEMPLATE.md) and keep examples synthetic.
 

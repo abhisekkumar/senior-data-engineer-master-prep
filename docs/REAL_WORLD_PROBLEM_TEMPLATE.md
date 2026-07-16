@@ -7,7 +7,7 @@ confidential interview material. A draft does not need every section completed.
 ## Problem metadata
 
 - **Title:**
-- **Roadmap phase/module:**
+- **Roadmap stage/module:**
 - **Canonical patterns:**
 - **Target duration:**
 - **Status:** Not started / Learning / Practicing / Interview ready / Mastered

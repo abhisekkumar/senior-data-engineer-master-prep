@@ -6,6 +6,7 @@ import pytest
 
 from tracker.roadmap import (
     RoadmapError,
+    archive_module,
     archive_phase,
     assign_question_to_module,
     create_item,
@@ -64,7 +65,8 @@ def test_loading_missing_roadmap_can_return_empty_document(tmp_path: Path) -> No
 def test_loading_missing_roadmap_seeds_once_without_overwrite(tmp_path: Path) -> None:
     path = tmp_path / "roadmap.json"
     document = load_roadmap(path, seed_question_ids=["leetcode-0001", "leetcode-0217"])
-    assert len(document.programs[0].phases) == 22
+    assert len(document.programs[0].phases) == 4
+    assert sum(len(stage.modules) for stage in document.programs[0].phases) == 22
     assert document.programs[0].phases[0].modules
     assert "leetcode-0001" in {
         question_id
@@ -81,22 +83,22 @@ def test_loading_missing_roadmap_seeds_once_without_overwrite(tmp_path: Path) ->
 def test_atomic_save_leaves_only_valid_destination(tmp_path: Path) -> None:
     path = tmp_path / "roadmap.json"
     save_roadmap(seed_roadmap(), path)
-    assert json.loads(path.read_text(encoding="utf-8"))["schema_version"] == 1
+    assert json.loads(path.read_text(encoding="utf-8"))["schema_version"] == 2
     assert not list(tmp_path.glob(".roadmap.json.*"))
 
 
-def test_phase_crud_reorder_archive_and_restore() -> None:
+def test_stage_crud_reorder_archive_and_restore() -> None:
     document = seed_roadmap()
     created = create_phase(
         document,
-        name="Phase W — Custom",
-        short_name="Phase W",
+        name="Stage 5 — Custom",
+        short_name="Stage 5",
         objective="Practice a custom topic.",
     )
-    update_phase(document, created.id, name="Phase W — Edited", description="Edited")
+    update_phase(document, created.id, name="Stage 5 — Edited", description="Edited")
     move_phase(document, created.id, -1)
-    assert created.name == "Phase W — Edited"
-    assert created.order == 22
+    assert created.name == "Stage 5 — Edited"
+    assert created.order == 4
     archive_phase(document, created.id)
     assert created.archived
     archive_phase(document, created.id, archived=False)
@@ -133,6 +135,18 @@ def test_module_and_item_crud_and_moves() -> None:
     assert item.started_at
     delete_item(document, item.id, confirmed=True)
     assert item not in module.items
+
+
+def test_module_archive_and_restore_preserves_items_and_active_focus() -> None:
+    document = seed_roadmap()
+    module = document.programs[0].phases[0].modules[0]
+    item_ids = [item.id for item in module.items]
+    archive_module(document, module.id)
+    assert module.archived
+    assert document.settings.active_module_id != module.id
+    assert [item.id for item in module.items] == item_ids
+    archive_module(document, module.id, archived=False)
+    assert not module.archived
 
 
 def test_delete_item_requires_confirmation() -> None:
@@ -195,7 +209,75 @@ def test_export_import_snapshots_and_restore(tmp_path: Path) -> None:
     assert "Senior Data Engineering Master Prep" in exported
     assert "# Preparation Roadmap" in export_roadmap_markdown(restored)
     imported = import_roadmap_json(exported, path)
-    assert imported.schema_version == 1
+    assert imported.schema_version == 2
+
+
+def test_schema_one_migration_snapshots_and_preserves_progress(tmp_path: Path) -> None:
+    path = tmp_path / "roadmap.json"
+    legacy = {
+        "schema_version": 1,
+        "programs": [
+            {
+                "id": "senior-data-engineering-master-prep",
+                "name": "Senior Data Engineering Master Prep",
+                "phases": [
+                    {
+                        "id": "phase-a",
+                        "name": "Phase A — Arrays and Hashing",
+                        "short_name": "Phase A",
+                        "order": 1,
+                        "modules": [
+                            {
+                                "id": "phase-a-duplicate-detection",
+                                "phase_id": "phase-a",
+                                "name": "Duplicate detection and sets",
+                                "order": 1,
+                                "items": [
+                                    {
+                                        "id": "legacy-item",
+                                        "module_id": "phase-a-duplicate-detection",
+                                        "title": "Contains Duplicate",
+                                        "item_type": "coding_question",
+                                        "order": 1,
+                                        "status": "practicing",
+                                        "notes": "Keep my progress",
+                                        "linked_question_ids": ["leetcode-0217"],
+                                    }
+                                ],
+                            }
+                        ],
+                    },
+                    {
+                        "id": "phase-b",
+                        "name": "Phase B — Two Pointers and Sorted Data",
+                        "short_name": "Phase B",
+                        "order": 2,
+                    },
+                ],
+            }
+        ],
+        "settings": {
+            "active_program_id": "senior-data-engineering-master-prep",
+            "active_phase_id": "phase-a",
+            "active_module_id": "phase-a-duplicate-detection",
+        },
+    }
+    path.write_text(json.dumps(legacy), encoding="utf-8")
+
+    migrated = load_roadmap(path)
+
+    assert migrated.schema_version == 2
+    assert migrated.settings.active_phase_id == "stage-1-coding-patterns"
+    assert migrated.settings.active_module_id == "module-a-arrays-hashing"
+    module = migrated.programs[0].phases[0].modules[0]
+    assert module.name == "Module A — Arrays and Hashing"
+    assert module.items[0].id == "legacy-item"
+    assert module.items[0].status == "practicing"
+    assert module.items[0].notes == "Keep my progress"
+    assert module.items[0].linked_question_ids == ["leetcode-0217"]
+    snapshots = list_snapshots(path)
+    assert len(snapshots) == 1
+    assert json.loads(snapshots[0].read_text(encoding="utf-8"))["schema_version"] == 1
 
 
 def test_invalid_json_and_invalid_import_do_not_overwrite(tmp_path: Path) -> None:

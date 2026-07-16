@@ -3,10 +3,19 @@
 Corrections, original explanations, tests, diagrams, and employer-neutral practice questions are
 welcome. Small, focused pull requests are easier to review and just as valuable as large additions.
 
+## Maintainer branch model
+
+- `main` is the protected, release-ready branch. Changes reach it through a pull request.
+- `dev` is the integration branch for ongoing repository work.
+- Create focused feature branches from `dev` when a change benefits from isolated review.
+- Push completed work to `dev`, confirm the **Quality checks** workflow passes, and open a
+  `dev` → `main` pull request.
+- Never force-push or develop directly on `main`.
+
 ## Development workflow
 
 1. Fork the repository on GitHub.
-2. Clone your fork and create a focused branch such as `question/0347-top-k` or
+2. Clone your fork and create a focused branch from `dev`, such as `question/0347-top-k` or
    `docs/binary-search-guide`.
 3. Install dependencies with `make install`.
 4. Make one cohesive change and update nearby documentation when commands or structure change.

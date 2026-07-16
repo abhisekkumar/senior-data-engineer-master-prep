@@ -41,15 +41,15 @@ def test_daily_plan_prioritizes_current_phase_and_overdue_link() -> None:
     assert any(item.get("roadmap_item_id") for item in plan["items"])
 
 
-def test_manual_phase_override_is_required_until_ready() -> None:
+def test_manual_stage_override_is_required_until_ready() -> None:
     document = seed_roadmap()
     with pytest.raises(RoadmapError, match="explicit override"):
-        set_active_phase(document, "phase-b")
-    set_active_phase(document, "phase-b", override=True)
-    assert document.settings.active_phase_id == "phase-b"
+        set_active_phase(document, "stage-2-advanced-algorithms")
+    set_active_phase(document, "stage-2-advanced-algorithms", override=True)
+    assert document.settings.active_phase_id == "stage-2-advanced-algorithms"
 
 
-def test_automatic_phase_advancement_requires_interview_ready() -> None:
+def test_automatic_stage_advancement_requires_interview_ready() -> None:
     document = seed_roadmap()
     document.settings.automatic_advancement = True
     document.settings.manual_phase_mode = False
@@ -58,7 +58,7 @@ def test_automatic_phase_advancement_requires_interview_ready() -> None:
         for item in module.items:
             update_item_status(document, item.id, "interview_ready")
     assert maybe_advance_phase(document)
-    assert document.settings.active_phase_id == "phase-b"
+    assert document.settings.active_phase_id == "stage-2-advanced-algorithms"
 
 
 def test_daily_completion_never_implies_mastery() -> None:
