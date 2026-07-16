@@ -6,6 +6,11 @@ from typing import Any
 
 import streamlit as st
 
+from dashboard.file_viewer import (
+    RepositoryFileError,
+    resolve_repository_file,
+    show_repository_file,
+)
 from tracker.database import ROOT
 from tracker.roadmap import (
     ROADMAP_ITEM_TYPES,
@@ -249,25 +254,44 @@ def _item_card(
                 )
                 local_path = ROOT / question["file_path"]
                 if local_path.is_file():
-                    columns[1].link_button(
-                        "Open file", local_path.as_uri(), icon=":material/open_in_new:"
-                    )
+                    if columns[1].button(
+                        "View file",
+                        key=f"view-question-file-{item.id}-{question['id']}",
+                        icon=":material/visibility:",
+                    ):
+                        show_repository_file(
+                            question["file_path"], title=question["title"]
+                        )
         if item.id in unresolved:
             st.warning(
                 "Unresolved question link: " + ", ".join(unresolved[item.id]),
                 icon=":material/link_off:",
             )
         if item.linked_resource_paths:
-            valid_resources = [path for path in item.linked_resource_paths if (ROOT / path).is_file()]
+            valid_resources: list[str] = []
+            invalid_resources: list[str] = []
+            for path in item.linked_resource_paths:
+                try:
+                    resolve_repository_file(path)
+                except (OSError, RepositoryFileError):
+                    invalid_resources.append(path)
+                else:
+                    valid_resources.append(path)
             if valid_resources:
                 st.caption("Resources: " + " · ".join(valid_resources))
                 for index, path in enumerate(valid_resources):
-                    st.link_button(
-                        f"Open {Path(path).name}",
-                        (ROOT / path).as_uri(),
+                    if st.button(
+                        f"View {Path(path).name}",
                         key=f"item-resource-{item.id}-{index}",
                         icon=":material/article:",
-                    )
+                    ):
+                        show_repository_file(path, title=Path(path).name)
+            if invalid_resources:
+                st.warning(
+                    "Unavailable or unsafe resource link: "
+                    + ", ".join(invalid_resources),
+                    icon=":material/link_off:",
+                )
         if item.real_world_context:
             st.markdown(f"**Scenario:** {item.real_world_context}")
         if item.completion_criteria:

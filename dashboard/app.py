@@ -12,6 +12,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from dashboard.components import metric_grid, question_table, resource_table
+from dashboard.file_viewer import show_repository_file
 from dashboard.roadmap_ui import render_roadmap, render_settings
 from dashboard.services import (
     dashboard_data,
@@ -179,7 +180,17 @@ with tabs[1]:
                         f":gray-badge[{humanize(roadmap_item.item_type)}]"
                     )
                 st.code(question["file_path"], language=None)
-                st.markdown(f"[Open the local solution file]({path.as_uri()})")
+                if path.is_file() and st.button(
+                    "View solution file",
+                    key=f"view-daily-file-{data['today']['date']}-{position}",
+                    icon=":material/visibility:",
+                ):
+                    show_repository_file(question["file_path"], title=question["title"])
+                elif not path.is_file():
+                    st.warning(
+                        f"The linked solution file is unavailable: {question['file_path']}",
+                        icon=":material/link_off:",
+                    )
                 if status == "not_started" and st.button(
                     "Mark task started",
                     key=f"start-{data['today']['date']}-{position}",

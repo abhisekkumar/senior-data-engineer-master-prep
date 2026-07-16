@@ -109,6 +109,7 @@ The dashboard provides:
 
 - Summary metrics, source/pattern breakdowns, and today's completion progress
 - Today's five tasks, local file links, status updates, and practice forms
+- A secure in-dashboard viewer for linked solution and study-resource files
 - An editable Preparation Roadmap with phase/module/item progress and quick readiness updates
 - Unassigned-question linking without copying or changing catalog records
 - Roadmap settings, JSON/Markdown export, validated import, and local snapshot restoration

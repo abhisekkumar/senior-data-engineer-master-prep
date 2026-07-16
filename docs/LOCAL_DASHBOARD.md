@@ -79,6 +79,8 @@ mode-specific sidebar.
 - Creates, edits, reorders, archives, and restores phases
 - Creates, edits, moves, and reorders modules and items
 - Links multiple catalog questions and study-resource/exercise paths
+- Opens linked solution and resource files in a repository-scoped dashboard viewer with line
+  numbers, syntax highlighting, and an optional download
 - Preserves unresolved links and displays a warning when a question record is unavailable
 - Assigns newly discovered questions from the Unassigned questions panel
 - Supports structured, draft-friendly real-world production exercises
